@@ -92,7 +92,6 @@
         "type": "link_list",
         "id": "nav_menu",
         "label": "Main Menu",
-        "default": "main-menu",
         "info": "Manage menus in Online Store > Navigation"
       },
       {
@@ -121,7 +120,6 @@
         "type": "link_list",
         "id": "footer_menu_1",
         "label": "Footer Menu 1 (Programs)",
-        "default": "footer-programs",
         "info": "Manage menus in Online Store > Navigation"
       },
       {
@@ -133,8 +131,7 @@
       {
         "type": "link_list",
         "id": "footer_menu_2",
-        "label": "Footer Menu 2 (Shop)",
-        "default": "footer-shop"
+        "label": "Footer Menu 2 (Shop)"
       },
       {
         "type": "text",
@@ -145,8 +142,7 @@
       {
         "type": "link_list",
         "id": "footer_menu_3",
-        "label": "Footer Menu 3 (Company)",
-        "default": "footer-company"
+        "label": "Footer Menu 3 (Company)"
       },
       {
         "type": "text",
