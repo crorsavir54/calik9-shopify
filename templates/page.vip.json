@@ -1,25 +1,11 @@
 {
   "sections": {
-    "vip_hero": {
-      "type": "vip-hero",
-      "settings": {}
-    },
-    "vip_about": {
-      "type": "vip-about-jas",
-      "settings": {}
-    },
-    "vip_whats_included": {
-      "type": "vip-whats-included",
-      "settings": {}
-    },
-    "vip_who_for": {
-      "type": "vip-who-for",
-      "settings": {}
-    },
-    "vip_final_cta": {
-      "type": "vip-final-cta",
-      "settings": {}
-    }
+    "vip_hero": { "type": "vip-hero", "settings": {} },
+    "vip_included": { "type": "vip-whats-included", "settings": {} },
+    "vip_who": { "type": "vip-who-for", "settings": {} },
+    "celebs": { "type": "celeb-clients", "settings": {} },
+    "vip_about": { "type": "vip-about-jas", "settings": {} },
+    "vip_cta": { "type": "vip-final-cta", "settings": {} }
   },
-  "order": ["vip_hero", "vip_about", "vip_whats_included", "vip_who_for", "vip_final_cta"]
+  "order": ["vip_hero", "vip_included", "vip_who", "celebs", "vip_about", "vip_cta"]
 }
