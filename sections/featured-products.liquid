@@ -46,7 +46,8 @@
         {% endfor %}
       {% else %}
         {% assign featured_col = section.settings.collection | default: 'frontpage' %}
-        {% assign featured = collections[featured_col].products | default: collections.all.products %}
+        {% assign featured = collections[featured_col].products %}
+        {% if featured == blank %}{% assign featured = collections.all.products %}{% endif %}
         {% for product in featured limit: section.settings.limit %}
           {% render 'product-card', product: product %}
         {% endfor %}
