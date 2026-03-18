@@ -1,0 +1,54 @@
+<section class="hero-dark">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="nfx-badge">
+        <span class="nn">N</span>
+        <span>Canine Intervention</span>
+      </div>
+      <span class="hero-tag-lt">Est. 2005 &middot; Oakland, CA</span>
+    </div>
+    <h1 class="hdg-hero">
+      REAL DOGS.<br>
+      <em>REAL RESULTS.</em>
+    </h1>
+    <p class="hero-sub">{{ section.settings.subheadline }}</p>
+    <div class="hero-ctas">
+      <a href="/pages/eval" class="btn btn-blue">Book Evaluation</a>
+      <a href="/collections/all" class="btn btn-outline-white">Shop Now</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hs-num count-up" data-target="5000" data-suffix="+">5000+</div>
+        <div class="hs-lbl">Dogs Trained</div>
+      </div>
+      <div>
+        <div class="hs-num count-up" data-target="18" data-suffix="+">18+</div>
+        <div class="hs-lbl">Years Experience</div>
+      </div>
+      <div>
+        <div class="hs-num">Netflix</div>
+        <div class="hs-lbl">Featured</div>
+      </div>
+      <div>
+        <div class="hs-num">A+</div>
+        <div class="hs-lbl">Results</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    {% if section.settings.hero_image %}
+      <img src="{{ section.settings.hero_image | img_url: '1200x' }}" alt="Jas Leverette &mdash; Cali K9 dog trainer">
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero Image" },
+    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Jas Leverette and Cali K9\u00ae deliver professional dog training rooted in relationship, structure, and results." }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

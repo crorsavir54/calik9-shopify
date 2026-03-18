@@ -1,0 +1,45 @@
+<div class="collection-header">
+  <div class="wrap">
+    <span class="tag" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);margin-bottom:20px">
+      {{ collection.products_count }} Products
+    </span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,72px);color:#fff">
+      {{ collection.title | upcase }}
+    </h1>
+    {% if collection.description != blank %}
+      <p style="font-family:var(--font-body);font-size:16px;color:rgba(255,255,255,.6);margin-top:16px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.7">
+        {{ collection.description }}
+      </p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="collection-body">
+  <div class="wrap">
+    {% if collection.products.size > 0 %}
+      <div class="product-grid">
+        {% for product in collection.products %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      </div>
+      {% if paginate.pages > 1 %}
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:48px">
+          {{ paginate | default_pagination }}
+        </div>
+      {% endif %}
+    {% else %}
+      <div style="text-align:center;padding:80px 0">
+        <h2 style="font-family:var(--font-display);font-size:36px;color:var(--gi);margin-bottom:16px">No Products Yet</h2>
+        <p style="font-family:var(--font-body);color:var(--gm);margin-bottom:32px">Check back soon for new Cali K9&reg; gear.</p>
+        <a href="/collections/all" class="btn btn-blue">Browse All Products</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "presets": [{ "name": "Collection Products" }]
+}
+{% endschema %}

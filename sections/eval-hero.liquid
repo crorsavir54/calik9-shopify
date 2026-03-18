@@ -1,0 +1,61 @@
+{% assign eval_product = all_products[section.settings.eval_product] %}
+
+<section class="hero-dark">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="tag" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.7)">Limited Spots &middot; One-on-One With Jas</span>
+    </div>
+    <h1 class="hdg-hero" style="font-size:clamp(42px,6vw,80px)">
+      CALI K9<sup style="font-size:.4em;vertical-align:super">&reg;</sup><br>
+      DOG TRAINING<br>
+      <em>EVALUATION</em>
+    </h1>
+    <p style="font-family:var(--font-cond);font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:24px">
+      1 Private Session &middot; Custom Roadmap &middot; Real Answers
+    </p>
+    <blockquote class="hero-quote">
+      "I don't train dogs. I educate handlers. When you understand the behavior, everything changes."
+      <footer style="font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:10px;font-style:normal">&mdash; Jas Leverette</footer>
+    </blockquote>
+
+    {% if eval_product %}
+      <form action="/cart/add" method="post" data-ajax-cart style="margin-bottom:24px">
+        <input type="hidden" name="id" value="{{ eval_product.variants.first.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn btn-blue" style="font-size:16px;padding:18px 40px">
+          Book My Evaluation &mdash; Only $27
+        </button>
+      </form>
+    {% else %}
+      <a href="/pages/eval" class="btn btn-blue" style="font-size:16px;padding:18px 40px;margin-bottom:24px">
+        Book My Evaluation &mdash; Only $27
+      </a>
+    {% endif %}
+
+    <div style="font-family:var(--font-cond);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35)">
+      &#128274; Secure &middot; Instant Confirmation &middot; Limited Spots
+    </div>
+  </div>
+
+  <div class="hero-right" style="display:flex;align-items:center;justify-content:center;padding:40px">
+    {% if section.settings.eval_image %}
+      <img src="{{ section.settings.eval_image | img_url: '900x' }}" alt="Dog Evaluation with Jas Leverette" style="border-radius:var(--radius);max-height:560px;object-fit:cover;width:100%;position:relative;z-index:2">
+    {% endif %}
+    <div style="position:absolute;bottom:48px;right:48px;z-index:3;background:var(--blue);border-radius:var(--radius);padding:24px 32px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3)">
+      <div style="font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:4px">Only</div>
+      <div style="font-family:var(--font-display);font-size:56px;color:#fff;line-height:1">$27</div>
+      <div style="font-family:var(--font-cond);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:4px">One Session</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Eval Hero",
+  "settings": [
+    { "type": "product", "id": "eval_product", "label": "Eval Product" },
+    { "type": "image_picker", "id": "eval_image", "label": "Eval Image" }
+  ],
+  "presets": [{ "name": "Eval Hero" }]
+}
+{% endschema %}

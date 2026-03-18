@@ -1,0 +1,59 @@
+<section class="sec" style="background:var(--w)">
+  <div class="wrap">
+    <div class="grid-2col" style="align-items:center;gap:64px">
+      <div class="reveal">
+        {% if section.settings.jas_image %}
+          <div style="border-radius:var(--radius);overflow:hidden;aspect-ratio:4/5">
+            <img src="{{ section.settings.jas_image | img_url: '800x' }}" alt="Jas Leverette" style="width:100%;height:100%;object-fit:cover">
+          </div>
+        {% else %}
+          <div style="border-radius:var(--radius);overflow:hidden;aspect-ratio:4/5;background:var(--gi);display:flex;align-items:center;justify-content:center">
+            <div style="font-family:var(--font-display);font-size:48px;color:rgba(255,255,255,.3)">JAS</div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="reveal reveal-d2">
+        <span class="tag" style="margin-bottom:24px">About Jas</span>
+        <h2 style="font-family:var(--font-display);font-size:clamp(36px,4vw,56px);color:var(--gi);line-height:1;margin-bottom:20px">
+          MEET <span style="color:var(--blue)">JAS LEVERETTE</span>
+        </h2>
+        <div class="div" style="margin-bottom:24px"></div>
+        <p style="font-family:var(--font-body);font-size:16px;color:var(--gm);line-height:1.8;margin-bottom:16px">
+          Jas Leverette is the founder of Cali K9&reg; and one of the most recognized dog trainers in the world. With over 18 years of experience and 5,000+ dogs trained, Jas has built a reputation for getting results where others have failed.
+        </p>
+        <p style="font-family:var(--font-body);font-size:16px;color:var(--gm);line-height:1.8;margin-bottom:32px">
+          Featured on Netflix's <em>Canine Intervention</em>, Jas brings a unique combination of science-backed methods, real-world experience, and deep empathy for both dogs and their families.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:32px">
+          <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
+            <div class="about-stat-num count-up" data-target="5000" data-suffix="+">5000+</div>
+            <div class="about-stat-lbl">Dogs Trained</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
+            <div class="about-stat-num" style="font-family:var(--font-display);font-size:28px;color:var(--blue)">Netflix</div>
+            <div class="about-stat-lbl">Featured</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
+            <div class="about-stat-num count-up" data-target="11" data-suffix="">11</div>
+            <div class="about-stat-lbl">Episodes</div>
+          </div>
+          <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
+            <div class="about-stat-num count-up" data-target="18" data-suffix="+">18+</div>
+            <div class="about-stat-lbl">Years Exp.</div>
+          </div>
+        </div>
+        <a href="/pages/eval" class="btn btn-blue">Book Your Evaluation</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Eval About Jas",
+  "settings": [
+    { "type": "image_picker", "id": "jas_image", "label": "Jas Image" }
+  ],
+  "presets": [{ "name": "Eval About Jas" }]
+}
+{% endschema %}

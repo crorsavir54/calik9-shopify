@@ -1,0 +1,19 @@
+{
+  "general": {
+    "password_page": {
+      "login_form_heading": "Enter password"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Cart",
+      "empty": "Your cart is empty."
+    }
+  }
+}

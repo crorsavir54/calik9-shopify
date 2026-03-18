@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "main": { "type": "cta-banner", "settings": {} }
+  },
+  "order": ["main"]
+}

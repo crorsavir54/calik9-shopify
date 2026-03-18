@@ -1,0 +1,31 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Cali K9",
+    "theme_version": "1.0.0",
+    "theme_author": "Cali K9",
+    "theme_documentation_url": "https://calik9.com",
+    "theme_support_url": "https://calik9.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Blue",
+        "default": "#1A3FAB"
+      }
+    ]
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo Image"
+      }
+    ]
+  }
+]

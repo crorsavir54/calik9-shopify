@@ -1,0 +1,26 @@
+<section class="sec reveal">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="tag">Shop</span>
+      <h2 class="hdg">Cali K9<span class="reg">&reg;</span> <span class="b">Gear</span></h2>
+      <div class="div div-c"></div>
+      <p class="sub">Professional training equipment, apparel, and treats used by Jas and the Cali K9 team.</p>
+    </div>
+    <div class="product-grid" style="margin-bottom:40px">
+      {% assign featured = collections['frontpage'].products | default: collections.all.products %}
+      {% for product in featured limit: 4 %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    </div>
+    <div style="text-align:center">
+      <a href="/collections/all" class="btn btn-outline">View All Products</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "presets": [{ "name": "Featured Products" }]
+}
+{% endschema %}
