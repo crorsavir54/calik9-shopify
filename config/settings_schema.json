@@ -58,18 +58,6 @@
     "name": "Typography",
     "settings": [
       {
-        "type": "font_picker",
-        "id": "font_heading",
-        "label": "Heading Font",
-        "default": "bebas_neue_n4"
-      },
-      {
-        "type": "font_picker",
-        "id": "font_body",
-        "label": "Body Font",
-        "default": "barlow_n4"
-      },
-      {
         "type": "range",
         "id": "base_font_size",
         "label": "Base Font Size",
@@ -103,8 +91,7 @@
       {
         "type": "url",
         "id": "nav_cta_url",
-        "label": "Nav CTA Button URL",
-        "default": "/pages/eval"
+        "label": "Nav CTA Button URL"
       },
       {
         "type": "checkbox",
