@@ -1,4 +1,25 @@
 {
-  "sections": {},
-  "order": []
+  "sections": {
+    "eval_hero": {
+      "type": "eval-hero",
+      "settings": {}
+    },
+    "eval_about": {
+      "type": "eval-about-jas",
+      "settings": {}
+    },
+    "eval_whats_included": {
+      "type": "eval-whats-included",
+      "settings": {}
+    },
+    "eval_who_for": {
+      "type": "eval-who-for",
+      "settings": {}
+    },
+    "eval_final_cta": {
+      "type": "eval-final-cta",
+      "settings": {}
+    }
+  },
+  "order": ["eval_hero", "eval_about", "eval_whats_included", "eval_who_for", "eval_final_cta"]
 }
