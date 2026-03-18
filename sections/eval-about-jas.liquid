@@ -1,4 +1,4 @@
-<section class="sec" style="background:var(--w)">
+<section class="sec" style="background:var(--w);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="wrap">
     <div class="grid-2col" style="align-items:center;gap:64px">
       <div class="reveal">
@@ -15,34 +15,52 @@
       <div class="reveal reveal-d2">
         <span class="tag" style="margin-bottom:24px">About Jas</span>
         <h2 style="font-family:var(--font-display);font-size:clamp(36px,4vw,56px);color:var(--gi);line-height:1;margin-bottom:20px">
-          MEET <span style="color:var(--blue)">JAS LEVERETTE</span>
+          {{ section.settings.heading | default: 'MEET <span style="color:var(--blue)">JAS LEVERETTE</span>' }}
         </h2>
         <div class="div" style="margin-bottom:24px"></div>
         <p style="font-family:var(--font-body);font-size:16px;color:var(--gm);line-height:1.8;margin-bottom:16px">
-          Jas Leverette is the founder of Cali K9&reg; and one of the most recognized dog trainers in the world. With over 18 years of experience and 5,000+ dogs trained, Jas has built a reputation for getting results where others have failed.
+          {{ section.settings.body_1 | default: 'Jas Leverette is the founder of Cali K9® and one of the most recognized dog trainers in the world. With over 18 years of experience and 5,000+ dogs trained, Jas has built a reputation for getting results where others have failed.' }}
         </p>
+        <p style="font-family:var(--font-body);font-size:16px;color:var(--gm);line-height:1.8;margin-bottom:16px">
+          {{ section.settings.body_2 | default: 'Featured on Netflix\'s Canine Intervention, Jas brings a unique combination of science-backed methods, real-world experience, and deep empathy for both dogs and their families.' }}
+        </p>
+        {% if section.settings.body_3 != blank %}
         <p style="font-family:var(--font-body);font-size:16px;color:var(--gm);line-height:1.8;margin-bottom:32px">
-          Featured on Netflix's <em>Canine Intervention</em>, Jas brings a unique combination of science-backed methods, real-world experience, and deep empathy for both dogs and their families.
+          {{ section.settings.body_3 }}
         </p>
+        {% else %}
+          <div style="margin-bottom:32px"></div>
+        {% endif %}
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:32px">
-          <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
-            <div class="about-stat-num count-up" data-target="5000" data-suffix="+">5000+</div>
-            <div class="about-stat-lbl">Dogs Trained</div>
-          </div>
-          <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
-            <div class="about-stat-num" style="font-family:var(--font-display);font-size:28px;color:var(--blue)">Netflix</div>
-            <div class="about-stat-lbl">Featured</div>
-          </div>
-          <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
-            <div class="about-stat-num count-up" data-target="11" data-suffix="">11</div>
-            <div class="about-stat-lbl">Episodes</div>
-          </div>
-          <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
-            <div class="about-stat-num count-up" data-target="18" data-suffix="+">18+</div>
-            <div class="about-stat-lbl">Years Exp.</div>
-          </div>
+          {% if section.blocks.size > 0 %}
+            {% for block in section.blocks %}
+              {% if block.type == 'stat' %}
+                <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)" {{ block.shopify_attributes }}>
+                  <div class="about-stat-num">{{ block.settings.number }}</div>
+                  <div class="about-stat-lbl">{{ block.settings.label }}</div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
+              <div class="about-stat-num count-up" data-target="5000" data-suffix="+">5000+</div>
+              <div class="about-stat-lbl">Dogs Trained</div>
+            </div>
+            <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
+              <div class="about-stat-num" style="font-family:var(--font-display);font-size:28px;color:var(--blue)">Netflix</div>
+              <div class="about-stat-lbl">Featured</div>
+            </div>
+            <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
+              <div class="about-stat-num count-up" data-target="11" data-suffix="">11</div>
+              <div class="about-stat-lbl">Episodes</div>
+            </div>
+            <div style="text-align:center;padding:20px;background:var(--off);border-radius:var(--radius-sm);border:1px solid var(--bo)">
+              <div class="about-stat-num count-up" data-target="18" data-suffix="+">18+</div>
+              <div class="about-stat-lbl">Years Exp.</div>
+            </div>
+          {% endif %}
         </div>
-        <a href="/pages/eval" class="btn btn-blue">Book Your Evaluation</a>
+        <a href="{{ section.settings.cta_url | default: '/pages/eval' }}" class="btn btn-blue">{{ section.settings.cta_text | default: 'Book Your Evaluation' }}</a>
       </div>
     </div>
   </div>
@@ -52,8 +70,36 @@
 {
   "name": "Eval About Jas",
   "settings": [
-    { "type": "image_picker", "id": "jas_image", "label": "Jas Image" }
+    { "type": "image_picker", "id": "jas_image", "label": "Jas Image" },
+    { "type": "text", "id": "heading", "label": "Heading HTML", "default": "MEET <span style=\"color:var(--blue)\">JAS LEVERETTE</span>" },
+    { "type": "textarea", "id": "body_1", "label": "Body Paragraph 1", "default": "Jas Leverette is the founder of Cali K9® and one of the most recognized dog trainers in the world. With over 18 years of experience and 5,000+ dogs trained, Jas has built a reputation for getting results where others have failed." },
+    { "type": "textarea", "id": "body_2", "label": "Body Paragraph 2", "default": "Featured on Netflix's Canine Intervention, Jas brings a unique combination of science-backed methods, real-world experience, and deep empathy for both dogs and their families." },
+    { "type": "textarea", "id": "body_3", "label": "Body Paragraph 3 (optional)", "default": "" },
+    { "type": "text", "id": "cta_text", "label": "CTA Text", "default": "Book Your Evaluation" },
+    { "type": "url", "id": "cta_url", "label": "CTA URL", "default": "/pages/eval" },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
   ],
-  "presets": [{ "name": "Eval About Jas" }]
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Number", "default": "5000+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Dogs Trained" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Eval About Jas",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "5000+", "label": "Dogs Trained" } },
+        { "type": "stat", "settings": { "number": "Netflix", "label": "Featured" } },
+        { "type": "stat", "settings": { "number": "11", "label": "Episodes" } },
+        { "type": "stat", "settings": { "number": "18+", "label": "Years Exp." } }
+      ]
+    }
+  ]
 }
 {% endschema %}

@@ -1,0 +1,122 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  case section.settings.bg
+    when 'white'
+      assign bg_val = 'var(--w)'
+    else
+      assign bg_val = 'var(--off)'
+  endcase
+-%}
+
+<section class="section reveal customer-account-section" style="padding-top:{{ pt }}px;padding-bottom:{{ pb }}px;background:{{ bg_val }}">
+  <div class="wrap">
+
+    <div class="acct-page-header">
+      <h1 class="acct-page-title">{{ section.settings.heading }}</h1>
+    </div>
+
+    <div class="acct-grid">
+
+      <!-- Order History -->
+      <div class="acct-orders">
+        <div class="acct-block-header">
+          <h2 class="acct-block-title">{{ section.settings.orders_heading }}</h2>
+        </div>
+
+        {% if customer.orders.size > 0 %}
+          <div class="order-table-wrap">
+            <table class="order-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in customer.orders %}
+                  <tr>
+                    <td class="order-num">{{ order.name }}</td>
+                    <td class="order-date">{{ order.created_at | date: '%b %d, %Y' }}</td>
+                    <td>
+                      <span class="order-status order-status--{{ order.fulfillment_status | replace: ' ', '-' | downcase }}">
+                        {{ order.fulfillment_status_label }}
+                      </span>
+                    </td>
+                    <td class="order-total">{{ order.total_price | money }}</td>
+                    <td>
+                      <a href="{{ order.customer_url }}" class="order-detail-link">View &rarr;</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="acct-empty">
+            <div class="acct-empty__icon">&#128230;</div>
+            <p class="acct-empty__text">You haven't placed any orders yet.</p>
+            <a href="/collections/all" class="btn btn-blue" style="margin-top:16px">Start Shopping</a>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Account Details -->
+      <div class="acct-details">
+        <div class="acct-block-header">
+          <h2 class="acct-block-title">{{ section.settings.details_heading }}</h2>
+        </div>
+        <div class="acct-info-card">
+          <div class="acct-info-name">{{ customer.first_name }} {{ customer.last_name }}</div>
+          <div class="acct-info-email">{{ customer.email }}</div>
+
+          {% if customer.default_address %}
+            <div class="acct-info-divider"></div>
+            <div class="acct-info-label">Default Address</div>
+            <address class="acct-info-address">
+              {{ customer.default_address.first_name }} {{ customer.default_address.last_name }}<br>
+              {{ customer.default_address.address1 }}<br>
+              {% if customer.default_address.address2 != blank %}{{ customer.default_address.address2 }}<br>{% endif %}
+              {{ customer.default_address.city }}, {{ customer.default_address.province_code }} {{ customer.default_address.zip }}<br>
+              {{ customer.default_address.country }}
+            </address>
+          {% endif %}
+
+          <div class="acct-info-divider"></div>
+          <div class="acct-info-actions">
+            <a href="/account/addresses" class="btn btn-outline" style="font-size:13px;padding:10px 20px">Manage Addresses</a>
+            <a href="/account/logout" class="btn" style="font-size:13px;padding:10px 20px;background:var(--gi);color:#fff;border-color:var(--gi)">Sign Out</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Account",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Page Heading", "default": "My Account" },
+    { "type": "text", "id": "orders_heading", "label": "Orders Section Heading", "default": "Order History" },
+    { "type": "text", "id": "details_heading", "label": "Details Section Heading", "default": "Account Details" },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "off-white", "label": "Off White" },
+        { "value": "white", "label": "White" }
+      ],
+      "default": "off-white"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 40, "max": 160, "step": 4, "default": 100, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 40, "max": 160, "step": 4, "default": 100, "unit": "px" }
+  ],
+  "presets": [{ "name": "Customer Account" }]
+}
+{% endschema %}

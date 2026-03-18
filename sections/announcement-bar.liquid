@@ -1,0 +1,87 @@
+{% assign bar_id = 'announcement-bar-' | append: section.id %}
+{% if section.settings.bg_color == 'dark' %}
+  {% assign bar_bg = 'var(--gi)' %}
+  {% assign bar_text = '#fff' %}
+{% elsif section.settings.bg_color == 'accent' %}
+  {% assign bar_bg = 'var(--accent)' %}
+  {% assign bar_text = 'var(--gi)' %}
+{% else %}
+  {% assign bar_bg = 'var(--blue)' %}
+  {% assign bar_text = '#fff' %}
+{% endif %}
+
+{% if section.settings.text_color == 'dark' %}
+  {% assign bar_text = 'var(--gi)' %}
+{% endif %}
+
+<div id="{{ bar_id }}" class="announcement-bar" style="background:{{ bar_bg }};color:{{ bar_text }};padding:10px 0;position:relative;z-index:999">
+  <div class="wrap" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
+    <div style="font-family:var(--font-cond);font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-align:center">
+      {{ section.settings.text }}
+    </div>
+    {% if section.settings.show_cta and section.settings.cta_text != blank %}
+      <a href="{{ section.settings.cta_url }}" style="font-family:var(--font-cond);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:inherit;text-decoration:underline;white-space:nowrap;opacity:.85;transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.85">
+        {{ section.settings.cta_text }} &rarr;
+      </a>
+    {% endif %}
+    {% if section.settings.dismissable %}
+      <button onclick="document.getElementById('{{ bar_id }}').style.display='none';sessionStorage.setItem('{{ bar_id }}','hidden')" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;color:inherit;opacity:.6;cursor:pointer;font-size:18px;line-height:1;padding:4px 8px" aria-label="Dismiss">&times;</button>
+    {% endif %}
+  </div>
+</div>
+
+{% if section.settings.dismissable %}
+<script>
+  (function(){
+    if(sessionStorage.getItem('{{ bar_id }}') === 'hidden'){
+      var el = document.getElementById('{{ bar_id }}');
+      if(el) el.style.display = 'none';
+    }
+  })();
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Announcement Text", "default": "🐾 Limited spots available — Book your Dog Evaluation today for only $27!" },
+    {
+      "type": "select",
+      "id": "bg_color",
+      "label": "Background Color",
+      "options": [
+        { "value": "blue", "label": "Blue" },
+        { "value": "dark", "label": "Dark Navy" },
+        { "value": "accent", "label": "Gold Accent" }
+      ],
+      "default": "blue"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text Color",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "white"
+    },
+    { "type": "checkbox", "id": "show_cta", "label": "Show CTA Link", "default": true },
+    { "type": "text", "id": "cta_text", "label": "CTA Text", "default": "Book Now" },
+    { "type": "url", "id": "cta_url", "label": "CTA URL", "default": "/pages/eval" },
+    { "type": "checkbox", "id": "dismissable", "label": "Dismissable", "default": true }
+  ],
+  "presets": [
+    {
+      "name": "Announcement Bar",
+      "settings": {
+        "text": "🐾 Limited spots available — Book your Dog Evaluation today for only $27!",
+        "show_cta": true,
+        "cta_text": "Book Now",
+        "cta_url": "/pages/eval"
+      }
+    }
+  ]
+}
+{% endschema %}

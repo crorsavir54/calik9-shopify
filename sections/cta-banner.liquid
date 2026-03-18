@@ -1,18 +1,51 @@
-<section class="cta-section">
+{% if section.settings.bg_color == 'dark' %}
+  {% assign bg_gradient = 'linear-gradient(135deg, var(--gi) 0%, #0f2272 100%)' %}
+{% else %}
+  {% assign bg_gradient = 'linear-gradient(135deg, var(--gi) 0%, var(--blue) 100%)' %}
+{% endif %}
+
+<section class="cta-section" style="background:{{ bg_gradient }};padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="cta-inner">
-    <h2>READY TO <span>TRANSFORM</span> YOUR DOG?</h2>
-    <p>Join thousands of families who've trusted Cali K9&reg; to unlock their dog's potential.</p>
+    {% if section.settings.eyebrow != blank %}
+      <div style="font-family:var(--font-cond);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:20px">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+    <h2>{{ section.settings.heading | default: 'READY TO <span>TRANSFORM</span> YOUR DOG?' }}</h2>
+    <p>{{ section.settings.body | default: "Join thousands of families who've trusted Cali K9® to unlock their dog's potential." }}</p>
     <div class="cta-btns">
-      <a href="/pages/eval" class="btn btn-white">Book Evaluation</a>
-      <a href="/collections/all" class="btn btn-outline-white">Shop Gear</a>
+      <a href="{{ section.settings.primary_cta_url | default: '/pages/eval' }}" class="btn btn-white">{{ section.settings.primary_cta_text | default: 'Book Evaluation' }}</a>
+      {% if section.settings.secondary_cta_text != blank %}
+        <a href="{{ section.settings.secondary_cta_url | default: '/collections/all' }}" class="btn btn-outline-white">{{ section.settings.secondary_cta_text | default: 'Shop Gear' }}</a>
+      {% endif %}
     </div>
-    <p class="cta-sub">No commitment &middot; Results guaranteed &middot; Trusted by thousands</p>
+    <p class="cta-sub">{{ section.settings.fine_print | default: 'No commitment · Results guaranteed · Trusted by thousands' }}</p>
   </div>
 </section>
 
 {% schema %}
 {
   "name": "CTA Banner",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "default": "" },
+    { "type": "text", "id": "heading", "label": "Heading HTML", "default": "READY TO <span>TRANSFORM</span> YOUR DOG?" },
+    { "type": "textarea", "id": "body", "label": "Body Text", "default": "Join thousands of families who've trusted Cali K9® to unlock their dog's potential." },
+    { "type": "text", "id": "primary_cta_text", "label": "Primary CTA Text", "default": "Book Evaluation" },
+    { "type": "url", "id": "primary_cta_url", "label": "Primary CTA URL", "default": "/pages/eval" },
+    { "type": "text", "id": "secondary_cta_text", "label": "Secondary CTA Text (leave blank to hide)", "default": "Shop Gear" },
+    { "type": "url", "id": "secondary_cta_url", "label": "Secondary CTA URL", "default": "/collections/all" },
+    { "type": "text", "id": "fine_print", "label": "Fine Print", "default": "No commitment · Results guaranteed · Trusted by thousands" },
+    {
+      "type": "select",
+      "id": "bg_color",
+      "label": "Background Color",
+      "options": [
+        { "value": "blue", "label": "Blue Gradient" },
+        { "value": "dark", "label": "Dark Navy" }
+      ],
+      "default": "blue"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 100 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 100 }
+  ],
   "presets": [{ "name": "CTA Banner" }]
 }
 {% endschema %}

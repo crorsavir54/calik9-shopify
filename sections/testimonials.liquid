@@ -1,47 +1,68 @@
-<section class="sec" style="background:var(--off)">
+<section class="sec" style="background:var(--off);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="wrap">
     <div class="sec-hd reveal">
-      <span class="tag">Results</span>
-      <h2 class="hdg">Real <span class="b">Transformations</span></h2>
+      <span class="tag">{{ section.settings.heading | default: 'Results' }}</span>
+      <h2 class="hdg">{{ section.settings.subheading | default: 'Real <span class="b">Transformations</span>' }}</h2>
       <div class="div div-c"></div>
     </div>
     <div class="grid-3col">
-      <div class="testi-card reveal reveal-d1">
-        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="testi-txt">Jas completely transformed our reactive German Shepherd in just 3 weeks. The results are beyond what we imagined possible.</p>
-        <div style="display:flex;align-items:center;gap:12px;margin-top:20px">
-          <div class="testi-av">M</div>
-          <div>
-            <div class="testi-author">Marcus T.</div>
-            <div class="testi-dog">Rocky &mdash; GSD</div>
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'testimonial' %}
+            <div class="testi-card reveal reveal-d{{ forloop.index }}" {{ block.shopify_attributes }}>
+              <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <p class="testi-txt">{{ block.settings.quote }}</p>
+              <div style="display:flex;align-items:center;gap:12px;margin-top:20px">
+                <div class="testi-av">{{ block.settings.author_name | slice: 0 }}</div>
+                <div>
+                  <div class="testi-author">{{ block.settings.author_name }}</div>
+                  <div class="testi-dog">{{ block.settings.pet_name }} &mdash; {{ block.settings.breed }}</div>
+                </div>
+              </div>
+              {% if block.settings.result_badge != blank %}
+                <div class="testi-result">&#10003; {{ block.settings.result_badge }}</div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="testi-card reveal reveal-d1">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-txt">Jas completely transformed our reactive German Shepherd in just 3 weeks. The results are beyond what we imagined possible.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:20px">
+            <div class="testi-av">M</div>
+            <div>
+              <div class="testi-author">Marcus T.</div>
+              <div class="testi-dog">Rocky &mdash; GSD</div>
+            </div>
           </div>
+          <div class="testi-result">&#10003; Reactivity Resolved</div>
         </div>
-        <div class="testi-result">&#10003; Reactivity Resolved</div>
-      </div>
-      <div class="testi-card reveal reveal-d2">
-        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="testi-txt">After struggling for 2 years with our Pit Bull mix, Cali K9 gave us our life back. Best investment we ever made.</p>
-        <div style="display:flex;align-items:center;gap:12px;margin-top:20px">
-          <div class="testi-av">J</div>
-          <div>
-            <div class="testi-author">Jennifer R.</div>
-            <div class="testi-dog">Diesel &mdash; Pit Mix</div>
+        <div class="testi-card reveal reveal-d2">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-txt">After struggling for 2 years with our Pit Bull mix, Cali K9 gave us our life back. Best investment we ever made.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:20px">
+            <div class="testi-av">J</div>
+            <div>
+              <div class="testi-author">Jennifer R.</div>
+              <div class="testi-dog">Diesel &mdash; Pit Mix</div>
+            </div>
           </div>
+          <div class="testi-result">&#10003; Aggression Fixed</div>
         </div>
-        <div class="testi-result">&#10003; Aggression Fixed</div>
-      </div>
-      <div class="testi-card reveal reveal-d3">
-        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="testi-txt">We were about to rehome our dog. Jas saved our family. The board &amp; train program is absolutely worth every penny.</p>
-        <div style="display:flex;align-items:center;gap:12px;margin-top:20px">
-          <div class="testi-av">D</div>
-          <div>
-            <div class="testi-author">David K.</div>
-            <div class="testi-dog">Luna &mdash; Rottweiler</div>
+        <div class="testi-card reveal reveal-d3">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-txt">We were about to rehome our dog. Jas saved our family. The board &amp; train program is absolutely worth every penny.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:20px">
+            <div class="testi-av">D</div>
+            <div>
+              <div class="testi-author">David K.</div>
+              <div class="testi-dog">Luna &mdash; Rottweiler</div>
+            </div>
           </div>
+          <div class="testi-result">&#10003; Family Safe</div>
         </div>
-        <div class="testi-result">&#10003; Family Safe</div>
-      </div>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -49,6 +70,61 @@
 {% schema %}
 {
   "name": "Testimonials",
-  "presets": [{ "name": "Testimonials" }]
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tag / Eyebrow", "default": "Results" },
+    { "type": "text", "id": "subheading", "label": "Heading HTML", "default": "Real <span class=\"b\">Transformations</span>" },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Jas completely transformed our dog. Incredible results." },
+        { "type": "text", "id": "author_name", "label": "Author Name", "default": "Marcus T." },
+        { "type": "text", "id": "pet_name", "label": "Pet Name", "default": "Rocky" },
+        { "type": "text", "id": "breed", "label": "Breed", "default": "GSD" },
+        { "type": "text", "id": "result_badge", "label": "Result Badge", "default": "Reactivity Resolved" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Jas completely transformed our reactive German Shepherd in just 3 weeks. The results are beyond what we imagined possible.",
+            "author_name": "Marcus T.",
+            "pet_name": "Rocky",
+            "breed": "GSD",
+            "result_badge": "Reactivity Resolved"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "After struggling for 2 years with our Pit Bull mix, Cali K9 gave us our life back. Best investment we ever made.",
+            "author_name": "Jennifer R.",
+            "pet_name": "Diesel",
+            "breed": "Pit Mix",
+            "result_badge": "Aggression Fixed"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "We were about to rehome our dog. Jas saved our family. The board & train program is absolutely worth every penny.",
+            "author_name": "David K.",
+            "pet_name": "Luna",
+            "breed": "Rottweiler",
+            "result_badge": "Family Safe"
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

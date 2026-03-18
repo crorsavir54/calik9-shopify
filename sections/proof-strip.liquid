@@ -1,30 +1,51 @@
-<div class="proof-strip">
+{% assign bg_val = section.settings.bg_color %}
+{% if bg_val == 'white' %}
+  {% assign bg_style = 'var(--w)' %}
+{% elsif bg_val == 'blue' %}
+  {% assign bg_style = 'var(--blue)' %}
+{% else %}
+  {% assign bg_style = 'var(--off)' %}
+{% endif %}
+
+<div class="proof-strip" style="background:{{ bg_style }}">
   <div class="wrap">
     <div class="proof-inner">
-      <div class="pf-stat">
-        <div class="pf-n count-up" data-target="5000" data-suffix="+">5000+</div>
-        <div class="pf-l">Dogs Trained</div>
-      </div>
-      <div class="pf-div"></div>
-      <div class="pf-stat">
-        <div class="pf-n count-up" data-target="18" data-suffix="+">18+</div>
-        <div class="pf-l">Years</div>
-      </div>
-      <div class="pf-div"></div>
-      <div class="pf-stat">
-        <div class="pf-n">Netflix</div>
-        <div class="pf-l">Featured</div>
-      </div>
-      <div class="pf-div"></div>
-      <div class="pf-stat">
-        <div class="pf-n">Oakland</div>
-        <div class="pf-l">HQ</div>
-      </div>
-      <div class="pf-div"></div>
-      <div class="pf-stat">
-        <div class="pf-n count-up" data-target="100" data-suffix="%">100%</div>
-        <div class="pf-l">Commitment</div>
-      </div>
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'stat' %}
+            {% unless forloop.first %}<div class="pf-div"></div>{% endunless %}
+            <div class="pf-stat" {{ block.shopify_attributes }}>
+              <div class="pf-n">{{ block.settings.number }}</div>
+              <div class="pf-l">{{ block.settings.label }}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="pf-stat">
+          <div class="pf-n count-up" data-target="5000" data-suffix="+">5000+</div>
+          <div class="pf-l">Dogs Trained</div>
+        </div>
+        <div class="pf-div"></div>
+        <div class="pf-stat">
+          <div class="pf-n count-up" data-target="18" data-suffix="+">18+</div>
+          <div class="pf-l">Years</div>
+        </div>
+        <div class="pf-div"></div>
+        <div class="pf-stat">
+          <div class="pf-n">Netflix</div>
+          <div class="pf-l">Featured</div>
+        </div>
+        <div class="pf-div"></div>
+        <div class="pf-stat">
+          <div class="pf-n">Oakland</div>
+          <div class="pf-l">HQ</div>
+        </div>
+        <div class="pf-div"></div>
+        <div class="pf-stat">
+          <div class="pf-n count-up" data-target="100" data-suffix="%">100%</div>
+          <div class="pf-l">Commitment</div>
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -32,6 +53,40 @@
 {% schema %}
 {
   "name": "Proof Strip",
-  "presets": [{ "name": "Proof Strip" }]
+  "settings": [
+    {
+      "type": "select",
+      "id": "bg_color",
+      "label": "Background Color",
+      "options": [
+        { "value": "off_white", "label": "Off White" },
+        { "value": "white", "label": "White" },
+        { "value": "blue", "label": "Blue" }
+      ],
+      "default": "off_white"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Number / Value", "default": "5000+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Dogs Trained" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Proof Strip",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "5000+", "label": "Dogs Trained" } },
+        { "type": "stat", "settings": { "number": "18+", "label": "Years" } },
+        { "type": "stat", "settings": { "number": "Netflix", "label": "Featured" } },
+        { "type": "stat", "settings": { "number": "Oakland", "label": "HQ" } },
+        { "type": "stat", "settings": { "number": "100%", "label": "Commitment" } }
+      ]
+    }
+  ]
 }
 {% endschema %}

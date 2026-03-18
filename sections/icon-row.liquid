@@ -1,0 +1,94 @@
+{% if section.settings.bg == 'blue' %}
+  {% assign section_bg = 'var(--blue)' %}
+  {% assign text_color = '#fff' %}
+  {% assign sub_color = 'rgba(255,255,255,.7)' %}
+  {% assign heading_color = '#fff' %}
+  {% assign item_bg = 'rgba(255,255,255,.08)' %}
+  {% assign item_border = 'rgba(255,255,255,.12)' %}
+{% elsif section.settings.bg == 'off-white' %}
+  {% assign section_bg = 'var(--off)' %}
+  {% assign text_color = 'var(--gi)' %}
+  {% assign sub_color = 'var(--gm)' %}
+  {% assign heading_color = 'var(--gi)' %}
+  {% assign item_bg = 'var(--w)' %}
+  {% assign item_border = 'var(--bo)' %}
+{% else %}
+  {% assign section_bg = 'var(--w)' %}
+  {% assign text_color = 'var(--gi)' %}
+  {% assign sub_color = 'var(--gm)' %}
+  {% assign heading_color = 'var(--gi)' %}
+  {% assign item_bg = 'var(--off)' %}
+  {% assign item_border = 'var(--bo)' %}
+{% endif %}
+
+<section class="section reveal" style="background:{{ section_bg }};padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  <div class="wrap">
+    {% if section.settings.heading != blank %}
+      <div class="sec-hd" style="margin-bottom:48px">
+        <h2 style="font-family:var(--font-display);font-size:clamp(32px,5vw,56px);color:{{ heading_color }};text-align:center">{{ section.settings.heading }}</h2>
+        <div style="width:48px;height:3px;background:{% if section.settings.bg == 'blue' %}rgba(255,255,255,.5){% else %}var(--blue){% endif %};border-radius:2px;margin:16px auto 0"></div>
+      </div>
+    {% endif %}
+    <div class="proof-inner" style="flex-wrap:wrap;gap:24px;justify-content:center">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'icon_item' %}
+            <div style="text-align:center;flex:1;min-width:180px;max-width:240px;padding:32px 24px;background:{{ item_bg }};border:1px solid {{ item_border }};border-radius:var(--radius);transition:transform .2s" {{ block.shopify_attributes }} onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+              <div style="font-size:40px;margin-bottom:12px">{{ block.settings.emoji }}</div>
+              <div style="font-family:var(--font-display);font-size:20px;color:{{ text_color }};margin-bottom:8px">{{ block.settings.title }}</div>
+              {% if block.settings.description != blank %}
+                <div style="font-family:var(--font-body);font-size:14px;color:{{ sub_color }};line-height:1.5">{{ block.settings.description }}</div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div style="font-family:var(--font-cond);font-size:14px;letter-spacing:2px;text-transform:uppercase;color:{{ sub_color }};text-align:center;width:100%;padding:40px 0">Add icon items using the theme editor</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Icon Row",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading (optional)", "default": "" },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "off-white", "label": "Off White" },
+        { "value": "blue", "label": "Blue" }
+      ],
+      "default": "off-white"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "icon_item",
+      "name": "Icon Item",
+      "settings": [
+        { "type": "text", "id": "emoji", "label": "Icon (emoji)", "default": "🐾" },
+        { "type": "text", "id": "title", "label": "Title", "default": "5000+ Dogs" },
+        { "type": "text", "id": "description", "label": "Description (optional)", "default": "Trained by Jas and the Cali K9 team." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon Row",
+      "blocks": [
+        { "type": "icon_item", "settings": { "emoji": "🐾", "title": "5000+ Dogs Trained", "description": "Over two decades of real results for real families." } },
+        { "type": "icon_item", "settings": { "emoji": "📺", "title": "Netflix Featured", "description": "As seen on Canine Intervention — 11 episodes." } },
+        { "type": "icon_item", "settings": { "emoji": "⭐", "title": "Celebrity Clients", "description": "Trusted by NBA champions and Grammy winners." } },
+        { "type": "icon_item", "settings": { "emoji": "🏆", "title": "Results Guaranteed", "description": "We don't stop until your dog is transformed." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

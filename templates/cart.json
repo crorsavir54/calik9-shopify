@@ -1,6 +1,6 @@
 {
   "sections": {
-    "main": { "type": "cta-banner", "settings": {} }
+    "main": { "type": "cart-page", "settings": {} }
   },
   "order": ["main"]
 }

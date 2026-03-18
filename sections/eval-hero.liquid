@@ -3,18 +3,16 @@
 <section class="hero-dark">
   <div class="hero-left">
     <div class="hero-eyebrow">
-      <span class="tag" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.7)">Limited Spots &middot; One-on-One With Jas</span>
+      <span class="tag" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.7)">{{ section.settings.eyebrow_tag | default: 'Limited Spots · One-on-One With Jas' }}</span>
     </div>
     <h1 class="hdg-hero" style="font-size:clamp(42px,6vw,80px)">
-      CALI K9<sup style="font-size:.4em;vertical-align:super">&reg;</sup><br>
-      DOG TRAINING<br>
-      <em>EVALUATION</em>
+      {{ section.settings.headline | default: 'CALI K9® DOG TRAINING EVALUATION' | newline_to_br }}
     </h1>
     <p style="font-family:var(--font-cond);font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:24px">
-      1 Private Session &middot; Custom Roadmap &middot; Real Answers
+      {{ section.settings.jas_tagline | default: '1 Private Session · Custom Roadmap · Real Answers' }}
     </p>
     <blockquote class="hero-quote">
-      "I don't train dogs. I educate handlers. When you understand the behavior, everything changes."
+      {{ section.settings.jas_quote | default: '"I don\'t train dogs. I educate handlers. When you understand the behavior, everything changes."' }}
       <footer style="font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:10px;font-style:normal">&mdash; Jas Leverette</footer>
     </blockquote>
 
@@ -23,17 +21,23 @@
         <input type="hidden" name="id" value="{{ eval_product.variants.first.id }}">
         <input type="hidden" name="quantity" value="1">
         <button type="submit" class="btn btn-blue" style="font-size:16px;padding:18px 40px">
-          Book My Evaluation &mdash; Only $27
+          {{ section.settings.primary_cta_text | default: 'Book My Evaluation — Only $27' }}
         </button>
       </form>
     {% else %}
       <a href="/pages/eval" class="btn btn-blue" style="font-size:16px;padding:18px 40px;margin-bottom:24px">
-        Book My Evaluation &mdash; Only $27
+        {{ section.settings.primary_cta_text | default: 'Book My Evaluation — Only $27' }}
+      </a>
+    {% endif %}
+
+    {% if section.settings.secondary_cta_text != blank %}
+      <a href="{{ section.settings.secondary_cta_url | default: '/collections/all' }}" class="btn btn-outline-white" style="margin-bottom:24px">
+        {{ section.settings.secondary_cta_text }}
       </a>
     {% endif %}
 
     <div style="font-family:var(--font-cond);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35)">
-      &#128274; Secure &middot; Instant Confirmation &middot; Limited Spots
+      {{ section.settings.fine_print | default: '🔒 Secure · Instant Confirmation · Limited Spots' }}
     </div>
   </div>
 
@@ -43,7 +47,7 @@
     {% endif %}
     <div style="position:absolute;bottom:48px;right:48px;z-index:3;background:var(--blue);border-radius:var(--radius);padding:24px 32px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3)">
       <div style="font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:4px">Only</div>
-      <div style="font-family:var(--font-display);font-size:56px;color:#fff;line-height:1">$27</div>
+      <div style="font-family:var(--font-display);font-size:56px;color:#fff;line-height:1">{{ section.settings.price_display | default: '$27' }}</div>
       <div style="font-family:var(--font-cond);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:4px">One Session</div>
     </div>
   </div>
@@ -54,7 +58,16 @@
   "name": "Eval Hero",
   "settings": [
     { "type": "product", "id": "eval_product", "label": "Eval Product" },
-    { "type": "image_picker", "id": "eval_image", "label": "Eval Image" }
+    { "type": "image_picker", "id": "eval_image", "label": "Eval Image" },
+    { "type": "text", "id": "eyebrow_tag", "label": "Eyebrow Tag", "default": "Limited Spots · One-on-One With Jas" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "CALI K9®\nDOG TRAINING\nEVALUATION" },
+    { "type": "text", "id": "jas_tagline", "label": "Tagline Below Headline", "default": "1 Private Session · Custom Roadmap · Real Answers" },
+    { "type": "textarea", "id": "jas_quote", "label": "Jas Quote", "default": "\"I don't train dogs. I educate handlers. When you understand the behavior, everything changes.\"" },
+    { "type": "text", "id": "price_display", "label": "Price Display", "default": "$27" },
+    { "type": "text", "id": "primary_cta_text", "label": "Primary CTA Text", "default": "Book My Evaluation — Only $27" },
+    { "type": "text", "id": "secondary_cta_text", "label": "Secondary CTA Text (leave blank to hide)", "default": "" },
+    { "type": "url", "id": "secondary_cta_url", "label": "Secondary CTA URL", "default": "/collections/all" },
+    { "type": "text", "id": "fine_print", "label": "Fine Print", "default": "🔒 Secure · Instant Confirmation · Limited Spots" }
   ],
   "presets": [{ "name": "Eval Hero" }]
 }

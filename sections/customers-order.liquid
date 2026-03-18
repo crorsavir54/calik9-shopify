@@ -1,0 +1,162 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  case section.settings.bg
+    when 'white'
+      assign bg_val = 'var(--w)'
+    else
+      assign bg_val = 'var(--off)'
+  endcase
+-%}
+
+<section class="section reveal customer-order-section" style="padding-top:{{ pt }}px;padding-bottom:{{ pb }}px;background:{{ bg_val }}">
+  <div class="wrap">
+
+    <div class="acct-page-header">
+      <div>
+        <h1 class="acct-page-title">Order {{ order.name }}</h1>
+        <a href="/account" class="acct-back-link">&larr; Back to Account</a>
+      </div>
+      <div class="order-meta-badges">
+        <span class="order-status order-status--{{ order.fulfillment_status | replace: ' ', '-' | downcase }}">
+          {{ order.fulfillment_status_label }}
+        </span>
+        <span class="order-status order-status--payment-{{ order.financial_status | replace: ' ', '-' | downcase }}">
+          {{ order.financial_status_label }}
+        </span>
+      </div>
+    </div>
+
+    <div class="order-detail-meta">
+      <span class="order-detail-date">Placed {{ order.created_at | date: '%B %d, %Y' }}</span>
+    </div>
+
+    <!-- Line Items -->
+    <div class="order-section-card">
+      <h2 class="order-section-title">Items Ordered</h2>
+      <table class="order-items-table">
+        <thead>
+          <tr>
+            <th class="col-product" colspan="2">Product</th>
+            <th class="col-qty">Qty</th>
+            <th class="col-price">Price</th>
+            <th class="col-total">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for line_item in order.line_items %}
+            <tr>
+              <td class="col-img">
+                {% if line_item.image %}
+                  <img src="{{ line_item.image | img_url: '120x120', crop: 'center' }}" alt="{{ line_item.title | escape }}" class="order-item-img">
+                {% else %}
+                  <div class="order-item-img order-item-img--placeholder"></div>
+                {% endif %}
+              </td>
+              <td class="col-info">
+                <div class="order-item-title">{{ line_item.title }}</div>
+                {% unless line_item.variant.title == 'Default Title' %}
+                  <div class="order-item-variant">{{ line_item.variant.title }}</div>
+                {% endunless %}
+                {% if line_item.sku != blank %}
+                  <div class="order-item-sku">SKU: {{ line_item.sku }}</div>
+                {% endif %}
+              </td>
+              <td class="col-qty order-item-qty">{{ line_item.quantity }}</td>
+              <td class="col-price order-item-price">{{ line_item.price | money }}</td>
+              <td class="col-total order-item-line-total">{{ line_item.quantity | times: line_item.price | money }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Totals -->
+      <div class="order-totals">
+        <div class="order-totals-row">
+          <span>Subtotal</span>
+          <span>{{ order.subtotal_price | money }}</span>
+        </div>
+        {% for discount in order.cart_level_discount_applications %}
+          <div class="order-totals-row order-totals-row--discount">
+            <span>Discount ({{ discount.title }})</span>
+            <span>-{{ discount.total_allocated_amount | money }}</span>
+          </div>
+        {% endfor %}
+        <div class="order-totals-row">
+          <span>Shipping</span>
+          <span>
+            {% if order.shipping_price == 0 %}
+              Free
+            {% else %}
+              {{ order.shipping_price | money }}
+            {% endif %}
+          </span>
+        </div>
+        {% if order.tax_price > 0 %}
+          <div class="order-totals-row">
+            <span>Tax</span>
+            <span>{{ order.tax_price | money }}</span>
+          </div>
+        {% endif %}
+        <div class="order-totals-row order-totals-row--grand">
+          <span>Total</span>
+          <span>{{ order.total_price | money }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address cards -->
+    <div class="order-addr-grid">
+      {% if order.shipping_address %}
+        <div class="order-addr-card">
+          <h3 class="order-addr-title">Shipping Address</h3>
+          <address class="order-addr-lines">
+            {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}<br>
+            {% if order.shipping_address.company != blank %}{{ order.shipping_address.company }}<br>{% endif %}
+            {{ order.shipping_address.address1 }}<br>
+            {% if order.shipping_address.address2 != blank %}{{ order.shipping_address.address2 }}<br>{% endif %}
+            {{ order.shipping_address.city }}, {{ order.shipping_address.province_code }} {{ order.shipping_address.zip }}<br>
+            {{ order.shipping_address.country }}<br>
+            {% if order.shipping_address.phone != blank %}{{ order.shipping_address.phone }}{% endif %}
+          </address>
+        </div>
+      {% endif %}
+
+      {% if order.billing_address %}
+        <div class="order-addr-card">
+          <h3 class="order-addr-title">Billing Address</h3>
+          <address class="order-addr-lines">
+            {{ order.billing_address.first_name }} {{ order.billing_address.last_name }}<br>
+            {% if order.billing_address.company != blank %}{{ order.billing_address.company }}<br>{% endif %}
+            {{ order.billing_address.address1 }}<br>
+            {% if order.billing_address.address2 != blank %}{{ order.billing_address.address2 }}<br>{% endif %}
+            {{ order.billing_address.city }}, {{ order.billing_address.province_code }} {{ order.billing_address.zip }}<br>
+            {{ order.billing_address.country }}
+          </address>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Order",
+  "settings": [
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "off-white", "label": "Off White" },
+        { "value": "white", "label": "White" }
+      ],
+      "default": "off-white"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 40, "max": 160, "step": 4, "default": 100, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 40, "max": 160, "step": 4, "default": 100, "unit": "px" }
+  ],
+  "presets": [{ "name": "Customer Order" }]
+}
+{% endschema %}

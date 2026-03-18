@@ -1,0 +1,96 @@
+{% if section.settings.bg == 'dark' %}
+  {% assign section_bg = 'var(--gi)' %}
+  {% assign text_color = '#fff' %}
+  {% assign sub_color = 'rgba(255,255,255,.7)' %}
+  {% assign input_bg = 'rgba(255,255,255,.08)' %}
+  {% assign input_border = 'rgba(255,255,255,.2)' %}
+  {% assign input_text = '#fff' %}
+  {% assign btn_class = 'btn btn-white' %}
+{% elsif section.settings.bg == 'off-white' %}
+  {% assign section_bg = 'var(--off)' %}
+  {% assign text_color = 'var(--gi)' %}
+  {% assign sub_color = 'var(--gm)' %}
+  {% assign input_bg = '#fff' %}
+  {% assign input_border = 'var(--bo)' %}
+  {% assign input_text = 'var(--gi)' %}
+  {% assign btn_class = 'btn btn-blue' %}
+{% else %}
+  {% assign section_bg = 'var(--blue)' %}
+  {% assign text_color = '#fff' %}
+  {% assign sub_color = 'rgba(255,255,255,.7)' %}
+  {% assign input_bg = 'rgba(255,255,255,.1)' %}
+  {% assign input_border = 'rgba(255,255,255,.25)' %}
+  {% assign input_text = '#fff' %}
+  {% assign btn_class = 'btn btn-white' %}
+{% endif %}
+
+<section class="section reveal" style="background:{{ section_bg }};padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  <div class="wrap-sm" style="text-align:center">
+    {% if section.settings.heading != blank %}
+      <h2 style="font-family:var(--font-display);font-size:clamp(32px,5vw,56px);color:{{ text_color }};line-height:1;margin-bottom:12px">{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if section.settings.subheading != blank %}
+      <p style="font-family:var(--font-body);font-size:17px;color:{{ sub_color }};margin-bottom:32px;line-height:1.6">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    {% form 'customer', id: 'newsletter-form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      {% if form.posted_successfully? %}
+        <p style="font-family:var(--font-cond);font-size:16px;font-weight:700;letter-spacing:1px;color:{{ text_color }};background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);border-radius:var(--radius-sm);padding:16px 24px">
+          {{ section.settings.success_message | default: "You're in! Check your inbox for updates." }}
+        </p>
+      {% else %}
+        <div style="display:flex;gap:0;max-width:480px;margin:0 auto;border-radius:var(--radius-sm);overflow:hidden;border:1px solid {{ input_border }}">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="{{ section.settings.placeholder_text | default: 'Your email address' }}"
+            required
+            style="flex:1;padding:14px 20px;background:{{ input_bg }};border:none;font-family:var(--font-body);font-size:15px;color:{{ input_text }};outline:none"
+          >
+          <button type="submit" style="font-family:var(--font-cond);font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 24px;background:{% if section.settings.bg == 'off-white' %}var(--blue){% else %}#fff{% endif %};color:{% if section.settings.bg == 'off-white' %}#fff{% else %}var(--blue){% endif %};border:none;cursor:pointer;white-space:nowrap;transition:opacity .2s" onmouseover="this.style.opacity=.9" onmouseout="this.style.opacity=1">
+            {{ section.settings.button_text | default: 'Subscribe' }}
+          </button>
+        </div>
+        {% if form.errors %}
+          <p style="margin-top:12px;font-family:var(--font-cond);font-size:13px;color:#f87171">{{ form.errors | default_errors }}</p>
+        {% endif %}
+      {% endif %}
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Stay in the Pack" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Training tips, success stories, and exclusive offers — straight from Jas." },
+    { "type": "text", "id": "placeholder_text", "label": "Input Placeholder", "default": "Your email address" },
+    { "type": "text", "id": "button_text", "label": "Button Text", "default": "Subscribe" },
+    { "type": "text", "id": "success_message", "label": "Success Message", "default": "You're in! Check your inbox for updates." },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "blue", "label": "Blue" },
+        { "value": "dark", "label": "Dark Navy" },
+        { "value": "off-white", "label": "Off White" }
+      ],
+      "default": "blue"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "settings": {
+        "heading": "Stay in the Pack",
+        "subheading": "Training tips, success stories, and exclusive offers — straight from Jas."
+      }
+    }
+  ]
+}
+{% endschema %}

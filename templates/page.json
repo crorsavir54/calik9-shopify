@@ -1,8 +1,11 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
-      "settings": {}
+      "type": "rich-text",
+      "settings": {
+        "heading": "",
+        "bg": "white"
+      }
     }
   },
   "order": ["main"]

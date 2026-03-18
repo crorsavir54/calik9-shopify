@@ -1,0 +1,28 @@
+<section class="section reveal" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;background:var(--off);min-height:60vh;display:flex;align-items:center">
+  <div class="wrap" style="text-align:center">
+    <div style="font-family:var(--font-display);font-size:clamp(80px,16vw,160px);color:var(--blue);line-height:1;margin-bottom:16px">404</div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(32px,5vw,56px);color:var(--gi);margin-bottom:16px">{{ section.settings.heading }}</h1>
+    <p style="font-family:var(--font-body);font-size:18px;color:#666;max-width:480px;margin:0 auto 40px;line-height:1.7">{{ section.settings.subheading }}</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="{{ section.settings.primary_cta_url }}" class="btn btn-blue">{{ section.settings.primary_cta_text }}</a>
+      <a href="{{ section.settings.secondary_cta_url }}" class="btn btn-outline">{{ section.settings.secondary_cta_text }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Page Not Found" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "The page you're looking for doesn't exist. Let's get you back on track." },
+    { "type": "text", "id": "primary_cta_text", "label": "Primary Button Text", "default": "Go Home" },
+    { "type": "url", "id": "primary_cta_url", "label": "Primary Button URL", "default": "/" },
+    { "type": "text", "id": "secondary_cta_text", "label": "Secondary Button Text", "default": "Shop Gear" },
+    { "type": "url", "id": "secondary_cta_url", "label": "Secondary Button URL", "default": "/collections/all" },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 40, "max": 160, "step": 4, "unit": "px", "default": 100 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 40, "max": 160, "step": 4, "unit": "px", "default": 100 }
+  ],
+  "presets": [{ "name": "404 Page" }]
+}
+{% endschema %}

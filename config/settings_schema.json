@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Cali K9",
-    "theme_version": "1.0.0",
+    "theme_version": "2.0.0",
     "theme_author": "Cali K9",
     "theme_documentation_url": "https://calik9.com",
     "theme_support_url": "https://calik9.com"
@@ -15,6 +15,69 @@
         "id": "color_primary",
         "label": "Primary Blue",
         "default": "#1A3FAB"
+      },
+      {
+        "type": "color",
+        "id": "color_dark",
+        "label": "Dark Navy",
+        "default": "#0a1a5c"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Gold Accent",
+        "default": "#c9a84c"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background White",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_off_white",
+        "label": "Off White",
+        "default": "#f5f2eb"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Body Text",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "color_footer_bg",
+        "label": "Footer Background",
+        "default": "#0a1a5c"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading Font",
+        "default": "bebas_neue_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body Font",
+        "default": "barlow_n4"
+      },
+      {
+        "type": "range",
+        "id": "base_font_size",
+        "label": "Base Font Size",
+        "min": 14,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 16
       }
     ]
   },
@@ -25,6 +88,87 @@
         "type": "image_picker",
         "id": "logo",
         "label": "Logo Image"
+      }
+    ]
+  },
+  {
+    "name": "Navigation",
+    "settings": [
+      {
+        "type": "text",
+        "id": "nav_cta_text",
+        "label": "Nav CTA Button Text",
+        "default": "Book Evaluation"
+      },
+      {
+        "type": "url",
+        "id": "nav_cta_url",
+        "label": "Nav CTA Button URL",
+        "default": "/pages/eval"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_programs_dropdown",
+        "label": "Show Programs Dropdown",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "text",
+        "id": "footer_tagline",
+        "label": "Footer Tagline",
+        "default": "Professional dog training rooted in relationship, structure, and real-world results. As seen on Netflix's Canine Intervention."
+      },
+      {
+        "type": "text",
+        "id": "footer_email",
+        "label": "Contact Email",
+        "default": "training@calik9.com"
+      },
+      {
+        "type": "text",
+        "id": "footer_ig",
+        "label": "Instagram Handle (e.g. calik9)",
+        "default": "calik9"
+      },
+      {
+        "type": "text",
+        "id": "footer_yt",
+        "label": "YouTube Handle (e.g. @calik9)",
+        "default": "@calik9"
+      },
+      {
+        "type": "text",
+        "id": "footer_tiktok",
+        "label": "TikTok Handle (e.g. @calik9)",
+        "default": "@calik9"
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL",
+        "default": "https://instagram.com/calik9"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube URL",
+        "default": "https://youtube.com/@calik9"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL",
+        "default": "https://tiktok.com/@calik9"
       }
     ]
   }

@@ -1,0 +1,150 @@
+{% if section.settings.bg == 'off-white' %}
+  {% assign section_bg = 'var(--off)' %}
+{% else %}
+  {% assign section_bg = 'var(--w)' %}
+{% endif %}
+
+<section class="section reveal" style="background:{{ section_bg }};padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  <div class="wrap-md">
+    {% if section.settings.heading != blank %}
+      <div class="sec-hd" style="margin-bottom:48px">
+        <h2 class="hdg">{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading != blank %}
+          <div class="div div-c"></div>
+          <p class="sub">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="faq-list">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq_item' %}
+          <div class="faq-item" {{ block.shopify_attributes }}>
+            <button class="faq-question" onclick="var item=this.closest('.faq-item');item.classList.toggle('open');var icon=this.querySelector('.faq-icon');icon.textContent=item.classList.contains('open')?'−':'+'" aria-expanded="false">
+              <span>{{ block.settings.question }}</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">{{ block.settings.answer }}</div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-item {
+    border-bottom: 1px solid var(--bo);
+  }
+  .faq-item:first-child {
+    border-top: 1px solid var(--bo);
+  }
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-cond);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gi);
+    letter-spacing: .5px;
+    gap: 16px;
+  }
+  .faq-icon {
+    font-size: 24px;
+    color: var(--blue);
+    flex-shrink: 0;
+    transition: transform .25s;
+    line-height: 1;
+  }
+  .faq-answer {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .35s cubic-bezier(.4,0,.2,1);
+  }
+  .faq-item.open .faq-answer {
+    max-height: 600px;
+  }
+  .faq-answer-inner {
+    padding-bottom: 20px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--gm);
+    line-height: 1.7;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently Asked Questions" },
+    { "type": "text", "id": "subheading", "label": "Subheading (optional)", "default": "" },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "off-white", "label": "Off White" }
+      ],
+      "default": "white"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "What happens during the Dog Evaluation?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>The Dog Evaluation is a private, one-on-one session with Jas Leverette. He will assess your dog's behavior, identify the root causes of any issues, and give you a custom action plan tailored to your dog and your lifestyle.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What happens during the Dog Evaluation?",
+            "answer": "<p>The Dog Evaluation is a private, one-on-one session with Jas Leverette. He will assess your dog's behavior, identify the root causes of any issues, and give you a custom action plan tailored to your dog and your lifestyle.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long is the evaluation session?",
+            "answer": "<p>The evaluation typically runs 60-90 minutes, giving Jas enough time to truly understand your dog's behavior patterns and develop a meaningful action plan.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is the VIP Training program?",
+            "answer": "<p>The VIP Training program includes 5 private 2-hour sessions with Jas Leverette, lifetime access to the Cali K9 online training library, and one full year of weekly group classes — all designed to create lasting, real-world results.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer board and train?",
+            "answer": "<p>Yes. Board and Train is available as an add-on to the VIP program, where your dog lives and trains with Jas for an accelerated, immersive experience.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

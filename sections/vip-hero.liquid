@@ -3,18 +3,16 @@
 <section class="hero-dark">
   <div class="hero-left">
     <div class="hero-eyebrow">
-      <span class="tag" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.7)">Premium &middot; Exclusive &middot; Results Guaranteed</span>
+      <span class="tag" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.7)">{{ section.settings.eyebrow_tag | default: 'Premium · Exclusive · Results Guaranteed' }}</span>
     </div>
     <h1 class="hdg-hero" style="font-size:clamp(42px,6vw,80px)">
-      CALI K9<sup style="font-size:.4em;vertical-align:super">&reg;</sup><br>
-      VIP DOG TRAINING<br>
-      <em>PROGRAM</em>
+      {{ section.settings.headline | default: 'CALI K9® VIP DOG TRAINING PROGRAM' | newline_to_br }}
     </h1>
     <p style="font-family:var(--font-cond);font-size:16px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:24px">
-      5 Private Sessions &middot; Lifetime Access &middot; 1 Year Group Classes
+      {{ section.settings.jas_tagline | default: '5 Private Sessions · Lifetime Access · 1 Year Group Classes' }}
     </p>
     <blockquote class="hero-quote">
-      "When you commit to this program, I commit to you. We don't stop until your dog is everything you need them to be."
+      {{ section.settings.jas_quote | default: '"When you commit to this program, I commit to you. We don\'t stop until your dog is everything you need them to be."' }}
       <footer style="font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:10px;font-style:normal">&mdash; Jas Leverette</footer>
     </blockquote>
 
@@ -23,17 +21,23 @@
         <input type="hidden" name="id" value="{{ vip_product.variants.first.id }}">
         <input type="hidden" name="quantity" value="1">
         <button type="submit" class="btn btn-blue" style="font-size:16px;padding:18px 40px">
-          Enroll Now &mdash; From $4,997
+          {{ section.settings.primary_cta_text | default: 'Enroll Now — From $4,997' }}
         </button>
       </form>
     {% else %}
       <a href="/pages/vip" class="btn btn-blue" style="font-size:16px;padding:18px 40px;margin-bottom:24px">
-        Enroll Now &mdash; From $4,997
+        {{ section.settings.primary_cta_text | default: 'Enroll Now — From $4,997' }}
+      </a>
+    {% endif %}
+
+    {% if section.settings.secondary_cta_text != blank %}
+      <a href="{{ section.settings.secondary_cta_url | default: '/pages/eval' }}" class="btn btn-outline-white" style="margin-bottom:24px">
+        {{ section.settings.secondary_cta_text }}
       </a>
     {% endif %}
 
     <div style="font-family:var(--font-cond);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35)">
-      &#128274; Secure &middot; Limited Enrollment &middot; Results Guaranteed
+      {{ section.settings.fine_print | default: '🔒 Secure · Limited Enrollment · Results Guaranteed' }}
     </div>
   </div>
 
@@ -43,7 +47,7 @@
     {% endif %}
     <div style="position:absolute;bottom:48px;right:48px;z-index:3;background:var(--blue);border-radius:var(--radius);padding:24px 32px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3)">
       <div style="font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:4px">Starting From</div>
-      <div style="font-family:var(--font-display);font-size:48px;color:#fff;line-height:1">$4,997</div>
+      <div style="font-family:var(--font-display);font-size:48px;color:#fff;line-height:1">{{ section.settings.price_display | default: '$4,997' }}</div>
       <div style="font-family:var(--font-cond);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:4px">5 Sessions</div>
     </div>
   </div>
@@ -54,7 +58,16 @@
   "name": "VIP Hero",
   "settings": [
     { "type": "product", "id": "vip_product", "label": "VIP Product" },
-    { "type": "image_picker", "id": "vip_image", "label": "VIP Image" }
+    { "type": "image_picker", "id": "vip_image", "label": "VIP Image" },
+    { "type": "text", "id": "eyebrow_tag", "label": "Eyebrow Tag", "default": "Premium · Exclusive · Results Guaranteed" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "CALI K9®\nVIP DOG TRAINING\nPROGRAM" },
+    { "type": "text", "id": "jas_tagline", "label": "Tagline Below Headline", "default": "5 Private Sessions · Lifetime Access · 1 Year Group Classes" },
+    { "type": "textarea", "id": "jas_quote", "label": "Jas Quote", "default": "\"When you commit to this program, I commit to you. We don't stop until your dog is everything you need them to be.\"" },
+    { "type": "text", "id": "price_display", "label": "Price Display", "default": "$4,997" },
+    { "type": "text", "id": "primary_cta_text", "label": "Primary CTA Text", "default": "Enroll Now — From $4,997" },
+    { "type": "text", "id": "secondary_cta_text", "label": "Secondary CTA Text (leave blank to hide)", "default": "" },
+    { "type": "url", "id": "secondary_cta_url", "label": "Secondary CTA URL", "default": "/pages/eval" },
+    { "type": "text", "id": "fine_print", "label": "Fine Print", "default": "🔒 Secure · Limited Enrollment · Results Guaranteed" }
   ],
   "presets": [{ "name": "VIP Hero" }]
 }

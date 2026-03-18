@@ -1,0 +1,95 @@
+<section style="padding-top:120px;padding-bottom:80px;min-height:60vh">
+  <div class="wrap">
+    <h1 style="font-family:var(--font-display);font-size:clamp(40px,6vw,72px);color:var(--gi);margin-bottom:48px">{{ section.settings.heading | default: 'Your Cart' }}</h1>
+
+    {% if cart.item_count == 0 %}
+      <!-- Empty Cart State -->
+      <div style="text-align:center;padding:80px 32px;background:var(--off);border-radius:var(--radius);border:1px solid var(--bo)">
+        <div style="font-size:64px;margin-bottom:24px">🛒</div>
+        <h2 style="font-family:var(--font-display);font-size:40px;color:var(--gi);margin-bottom:12px">{{ section.settings.empty_heading | default: 'Your cart is empty' }}</h2>
+        <p style="font-family:var(--font-body);font-size:16px;color:var(--gm);margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto">
+          Ready to invest in your dog? Browse our training programs and gear.
+        </p>
+        <a href="{{ section.settings.empty_cta_url | default: '/collections/all' }}" class="btn btn-blue" style="font-size:15px">
+          {{ section.settings.empty_cta_text | default: 'Continue Shopping' }}
+        </a>
+      </div>
+    {% else %}
+      <!-- Cart with Items -->
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:start">
+
+        <!-- Cart Items -->
+        <div>
+          <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:16px;padding:0 0 12px;border-bottom:1px solid var(--bo);margin-bottom:8px">
+            <div style="grid-column:2;font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gm)">Product</div>
+            <div style="font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gm)">Qty</div>
+            <div style="font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gm)">Total</div>
+          </div>
+
+          {% for item in cart.items %}
+            <div style="display:grid;grid-template-columns:88px 1fr auto auto;gap:16px;align-items:center;padding:20px 0;border-bottom:1px solid var(--bo)" data-key="{{ item.key }}">
+              <!-- Image -->
+              <a href="{{ item.url }}">
+                {% if item.image %}
+                  <img src="{{ item.image | img_url: '176x176', crop: 'center' }}" alt="{{ item.title | escape }}" style="width:88px;height:88px;border-radius:var(--radius-sm);object-fit:cover;display:block">
+                {% else %}
+                  <div style="width:88px;height:88px;border-radius:var(--radius-sm);background:var(--off);border:1px solid var(--bo)"></div>
+                {% endif %}
+              </a>
+              <!-- Info -->
+              <div>
+                <a href="{{ item.url }}" style="font-family:var(--font-cond);font-size:16px;font-weight:700;color:var(--gi);text-decoration:none;display:block;margin-bottom:4px">{{ item.product.title }}</a>
+                {% unless item.variant.title == 'Default Title' %}
+                  <div style="font-family:var(--font-cond);font-size:13px;color:var(--gm);letter-spacing:.5px;margin-bottom:4px">{{ item.variant.title }}</div>
+                {% endunless %}
+                <div style="font-family:var(--font-display);font-size:18px;color:var(--blue)">{{ item.price | money }}</div>
+                <a href="/cart/change?line={{ forloop.index }}&quantity=0" style="font-family:var(--font-cond);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gm);text-decoration:none;margin-top:6px;display:inline-block;transition:color .15s" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='var(--gm)'">Remove</a>
+              </div>
+              <!-- Qty -->
+              <form action="/cart/change" method="post" style="display:flex;align-items:center;gap:8px">
+                <input type="hidden" name="line" value="{{ forloop.index }}">
+                <button type="submit" name="quantity" value="{{ item.quantity | minus: 1 }}" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--bo);background:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:var(--font-cond);font-weight:700;color:var(--gi)">-</button>
+                <span style="font-family:var(--font-cond);font-size:15px;font-weight:700;color:var(--gi);min-width:24px;text-align:center">{{ item.quantity }}</span>
+                <button type="submit" name="quantity" value="{{ item.quantity | plus: 1 }}" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--bo);background:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:var(--font-cond);font-weight:700;color:var(--gi)">+</button>
+              </form>
+              <!-- Line total -->
+              <div style="font-family:var(--font-display);font-size:20px;color:var(--gi)">{{ item.line_price | money }}</div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Order Summary -->
+        <div style="background:var(--off);border-radius:var(--radius);border:1px solid var(--bo);padding:32px;position:sticky;top:100px">
+          <h3 style="font-family:var(--font-display);font-size:24px;color:var(--gi);margin-bottom:24px">Order Summary</h3>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--bo);margin-bottom:16px">
+            <span style="font-family:var(--font-cond);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gm)">Subtotal ({{ cart.item_count }} item{{ cart.item_count | plural: '', 's' }})</span>
+            <span style="font-family:var(--font-display);font-size:24px;color:var(--gi)">{{ cart.total_price | money }}</span>
+          </div>
+          <p style="font-family:var(--font-cond);font-size:12px;letter-spacing:1px;color:var(--gm);margin-bottom:20px;text-transform:uppercase">Shipping and taxes calculated at checkout</p>
+          <a href="/checkout" class="cart-checkout" style="display:block;padding:18px;font-size:16px">Proceed to Checkout</a>
+          <a href="/collections/all" style="display:block;text-align:center;font-family:var(--font-cond);font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);text-decoration:none;margin-top:16px;padding:12px;border-radius:var(--radius-sm);border:2px solid var(--blue);transition:background .2s,color .2s" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='var(--blue)'">Continue Shopping</a>
+          <p style="font-family:var(--font-cond);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gm);text-align:center;margin-top:16px">&#128274; Secure Checkout</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    .cart-page-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Cart Page",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Cart Heading", "default": "Your Cart" },
+    { "type": "text", "id": "empty_heading", "label": "Empty Cart Heading", "default": "Your cart is empty" },
+    { "type": "text", "id": "empty_cta_text", "label": "Empty Cart CTA Text", "default": "Continue Shopping" },
+    { "type": "url", "id": "empty_cta_url", "label": "Empty Cart CTA URL", "default": "/collections/all" }
+  ],
+  "presets": [{ "name": "Cart Page" }]
+}
+{% endschema %}

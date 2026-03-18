@@ -1,31 +1,50 @@
-<section class="sec reveal" style="background:var(--off)">
+<section class="sec reveal" style="background:var(--off);padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="wrap">
     <div class="sec-hd">
-      <span class="tag">Training Programs</span>
-      <h2 class="hdg">Transform Your Dog's <span class="b">Behavior</span></h2>
+      <span class="tag">{{ section.settings.heading | default: 'Training Programs' }}</span>
+      <h2 class="hdg">{{ section.settings.subheading | default: 'Transform Your Dog\'s <span class="b">Behavior</span>' }}</h2>
       <div class="div div-c"></div>
-      <p class="sub">Every program is built around your dog's individual needs and your family's goals.</p>
+      <p class="sub">{{ section.settings.subtext | default: "Every program is built around your dog's individual needs and your family's goals." }}</p>
     </div>
     <div class="grid-3col">
-      <div class="card reveal reveal-d1" style="position:relative;padding:32px">
-        <div class="prog-name">VIP Training</div>
-        <div class="prog-price">From $4,997</div>
-        <p class="prog-desc">Five private 2-hour sessions with Jas Leverette plus lifetime online course access and a year of group classes.</p>
-        <a href="/pages/vip" class="prog-btn">Learn More &rarr;</a>
-      </div>
-      <div class="card featured reveal reveal-d2" style="position:relative;padding:32px">
-        <span style="position:absolute;top:0;right:0;background:var(--blue);color:#fff;font-family:var(--font-cond);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-bottom-left-radius:7px">Most Popular</span>
-        <div class="prog-name">Dog Evaluation</div>
-        <div class="prog-price">Only $27</div>
-        <p class="prog-desc">One private session with Jas &mdash; he pinpoints the root cause of your dog's behavior and hands you a custom action plan.</p>
-        <a href="/pages/eval" class="prog-btn">Learn More &rarr;</a>
-      </div>
-      <div class="card reveal reveal-d3" style="position:relative;padding:32px">
-        <div class="prog-name">Shop Gear</div>
-        <div class="prog-price">Free Shipping</div>
-        <p class="prog-desc">Professional training equipment, premium treats, and Cali K9&reg; apparel used by Jas and the team.</p>
-        <a href="/collections/all" class="prog-btn">Shop Now &rarr;</a>
-      </div>
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'program_card' %}
+            <div class="card{% if block.settings.highlight %} featured{% endif %} reveal reveal-d{{ forloop.index }}" style="position:relative;padding:32px" {{ block.shopify_attributes }}>
+              {% if block.settings.badge_show and block.settings.badge_text != blank %}
+                <span style="position:absolute;top:0;right:0;background:var(--blue);color:#fff;font-family:var(--font-cond);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-bottom-left-radius:7px">{{ block.settings.badge_text }}</span>
+              {% endif %}
+              {% if block.settings.eyebrow != blank %}
+                <span class="tag" style="font-size:10px;margin-bottom:12px">{{ block.settings.eyebrow }}</span>
+              {% endif %}
+              <div class="prog-name">{{ block.settings.title }}</div>
+              <div class="prog-price">{{ block.settings.price_label }}</div>
+              <p class="prog-desc">{{ block.settings.description }}</p>
+              <a href="{{ block.settings.cta_url }}" class="prog-btn">{{ block.settings.cta_text }} &rarr;</a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="card reveal reveal-d1" style="position:relative;padding:32px">
+          <div class="prog-name">VIP Training</div>
+          <div class="prog-price">From $4,997</div>
+          <p class="prog-desc">Five private 2-hour sessions with Jas Leverette plus lifetime online course access and a year of group classes.</p>
+          <a href="/pages/vip" class="prog-btn">Learn More &rarr;</a>
+        </div>
+        <div class="card featured reveal reveal-d2" style="position:relative;padding:32px">
+          <span style="position:absolute;top:0;right:0;background:var(--blue);color:#fff;font-family:var(--font-cond);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-bottom-left-radius:7px">Most Popular</span>
+          <div class="prog-name">Dog Evaluation</div>
+          <div class="prog-price">Only $27</div>
+          <p class="prog-desc">One private session with Jas &mdash; he pinpoints the root cause of your dog's behavior and hands you a custom action plan.</p>
+          <a href="/pages/eval" class="prog-btn">Learn More &rarr;</a>
+        </div>
+        <div class="card reveal reveal-d3" style="position:relative;padding:32px">
+          <div class="prog-name">Shop Gear</div>
+          <div class="prog-price">Free Shipping</div>
+          <p class="prog-desc">Professional training equipment, premium treats, and Cali K9&reg; apparel used by Jas and the team.</p>
+          <a href="/collections/all" class="prog-btn">Shop Now &rarr;</a>
+        </div>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -33,6 +52,73 @@
 {% schema %}
 {
   "name": "Programs",
-  "presets": [{ "name": "Programs" }]
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Tag / Eyebrow", "default": "Training Programs" },
+    { "type": "text", "id": "subheading", "label": "Heading HTML", "default": "Transform Your Dog's <span class=\"b\">Behavior</span>" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Every program is built around your dog's individual needs and your family's goals." },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "program_card",
+      "name": "Program Card",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "default": "" },
+        { "type": "text", "id": "title", "label": "Title", "default": "VIP Training" },
+        { "type": "text", "id": "price_label", "label": "Price Label", "default": "From $4,997" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Five private 2-hour sessions with Jas Leverette plus lifetime online course access and a year of group classes." },
+        { "type": "text", "id": "cta_text", "label": "CTA Text", "default": "Learn More" },
+        { "type": "url", "id": "cta_url", "label": "CTA URL", "default": "/pages/vip" },
+        { "type": "checkbox", "id": "highlight", "label": "Featured / Highlighted Card", "default": false },
+        { "type": "checkbox", "id": "badge_show", "label": "Show Badge", "default": false },
+        { "type": "text", "id": "badge_text", "label": "Badge Text", "default": "Most Popular" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Programs",
+      "blocks": [
+        {
+          "type": "program_card",
+          "settings": {
+            "title": "VIP Training",
+            "price_label": "From $4,997",
+            "description": "Five private 2-hour sessions with Jas Leverette plus lifetime online course access and a year of group classes.",
+            "cta_text": "Learn More",
+            "cta_url": "/pages/vip",
+            "highlight": false,
+            "badge_show": false
+          }
+        },
+        {
+          "type": "program_card",
+          "settings": {
+            "title": "Dog Evaluation",
+            "price_label": "Only $27",
+            "description": "One private session with Jas — he pinpoints the root cause of your dog's behavior and hands you a custom action plan.",
+            "cta_text": "Learn More",
+            "cta_url": "/pages/eval",
+            "highlight": true,
+            "badge_show": true,
+            "badge_text": "Most Popular"
+          }
+        },
+        {
+          "type": "program_card",
+          "settings": {
+            "title": "Shop Gear",
+            "price_label": "Free Shipping",
+            "description": "Professional training equipment, premium treats, and Cali K9® apparel used by Jas and the team.",
+            "cta_text": "Shop Now",
+            "cta_url": "/collections/all",
+            "highlight": false,
+            "badge_show": false
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

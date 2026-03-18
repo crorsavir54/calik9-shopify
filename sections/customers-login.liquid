@@ -1,0 +1,135 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  case section.settings.bg
+    when 'white'
+      assign bg_val = 'var(--w)'
+    when 'dark'
+      assign bg_val = 'var(--gi)'
+    else
+      assign bg_val = 'var(--off)'
+  endcase
+-%}
+
+<section class="section reveal customer-auth-section" style="padding-top:{{ pt }}px;padding-bottom:{{ pb }}px;background:{{ bg_val }}">
+  <div class="wrap">
+    <div class="auth-card">
+      <div class="auth-card__header">
+        <h1 class="auth-card__title">{{ section.settings.heading }}</h1>
+        <p class="auth-card__sub">{{ section.settings.subheading }}</p>
+      </div>
+
+      <div id="LoginForm">
+        {% form 'customer_login' %}
+          {{ form.errors | default_errors }}
+          <div class="field-group">
+            <label for="CustomerEmail">Email</label>
+            <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required>
+          </div>
+          <div class="field-group">
+            <label for="CustomerPassword">Password</label>
+            <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn btn-blue auth-submit-btn">Sign In</button>
+          <div class="auth-card__links">
+            <a href="#recover" id="ShowRecoverPasswordLink">Forgot password?</a>
+            {% if section.settings.show_register_link %}
+              <span>{{ section.settings.register_text }} <a href="/account/register">{{ section.settings.register_link_text }}</a></span>
+            {% endif %}
+          </div>
+        {% endform %}
+      </div>
+
+      <div id="RecoverPasswordForm" style="display:none">
+        {% form 'recover_customer_password' %}
+          {{ form.errors | default_errors }}
+          {% if form.posted_successfully? %}
+            <p class="form-success">Check your email for reset instructions.</p>
+            <div class="auth-card__links">
+              <a href="#" id="HideRecoverPasswordLink">Back to login</a>
+            </div>
+          {% else %}
+            <div class="auth-card__recover-header">
+              <h2 class="auth-card__title" style="font-size:1.8rem">Reset Password</h2>
+              <p class="auth-card__sub">Enter your email and we'll send you a reset link.</p>
+            </div>
+            <div class="field-group">
+              <label for="RecoverEmail">Email</label>
+              <input type="email" name="email" id="RecoverEmail" autocomplete="email" required>
+            </div>
+            <button type="submit" class="btn btn-blue auth-submit-btn">Send Reset Link</button>
+            <div class="auth-card__links">
+              <a href="#" id="HideRecoverPasswordLink">Back to login</a>
+            </div>
+          {% endif %}
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var loginForm = document.getElementById('LoginForm');
+    var recoverForm = document.getElementById('RecoverPasswordForm');
+    var showLink = document.getElementById('ShowRecoverPasswordLink');
+    var hideLink = document.getElementById('HideRecoverPasswordLink');
+
+    function showRecover() {
+      recoverForm.style.display = 'block';
+      loginForm.style.display = 'none';
+    }
+
+    function showLogin() {
+      loginForm.style.display = 'block';
+      recoverForm.style.display = 'none';
+      history.pushState(null, null, window.location.pathname);
+    }
+
+    if (window.location.hash === '#recover') {
+      showRecover();
+    }
+
+    if (showLink) {
+      showLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        showRecover();
+        history.pushState(null, null, '#recover');
+      });
+    }
+
+    if (hideLink) {
+      hideLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        showLogin();
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customer Login",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Welcome Back" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Sign in to your Cali K9 account" },
+    { "type": "checkbox", "id": "show_register_link", "label": "Show register link", "default": true },
+    { "type": "text", "id": "register_text", "label": "Register prompt text", "default": "Don't have an account?" },
+    { "type": "text", "id": "register_link_text", "label": "Register link text", "default": "Create one" },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "off-white", "label": "Off White" },
+        { "value": "white", "label": "White" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "off-white"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 40, "max": 160, "step": 4, "default": 100, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 40, "max": 160, "step": 4, "default": 100, "unit": "px" }
+  ],
+  "presets": [{ "name": "Customer Login" }]
+}
+{% endschema %}

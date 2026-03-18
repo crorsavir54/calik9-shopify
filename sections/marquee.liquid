@@ -1,18 +1,85 @@
-<div class="marquee">
-  <div class="marquee-track">
-    {% assign items = "Board & Train,Private Sessions,Group Classes,Obedience,Protection Sport,Puppy Development,Behavior Modification,Real-World Training" | split: "," %}
-    {% for item in items %}
-      <span class="mq-item">{{ item }}<span class="mq-dot">&#9670;</span></span>
-    {% endfor %}
-    {% for item in items %}
-      <span class="mq-item">{{ item }}<span class="mq-dot">&#9670;</span></span>
-    {% endfor %}
+{% assign bg_val = section.settings.bg_color %}
+{% if bg_val == 'dark' %}
+  {% assign bg_style = 'var(--gi)' %}
+{% elsif bg_val == 'white' %}
+  {% assign bg_style = 'var(--w)' %}
+{% else %}
+  {% assign bg_style = 'var(--blue)' %}
+{% endif %}
+
+<div class="marquee" style="background:{{ bg_style }}">
+  <div class="marquee-track" style="animation-duration:{{ section.settings.speed }}s">
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        {% if block.type == 'item' %}
+          <span class="mq-item" {{ block.shopify_attributes }}>{{ block.settings.text }}<span class="mq-dot">&#9670;</span></span>
+        {% endif %}
+      {% endfor %}
+      {% for block in section.blocks %}
+        {% if block.type == 'item' %}
+          <span class="mq-item">{{ block.settings.text }}<span class="mq-dot">&#9670;</span></span>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% assign items = "Board & Train,Private Sessions,Group Classes,Obedience,Protection Sport,Puppy Development,Behavior Modification,Real-World Training" | split: "," %}
+      {% for item in items %}
+        <span class="mq-item">{{ item }}<span class="mq-dot">&#9670;</span></span>
+      {% endfor %}
+      {% for item in items %}
+        <span class="mq-item">{{ item }}<span class="mq-dot">&#9670;</span></span>
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 
 {% schema %}
 {
   "name": "Marquee",
-  "presets": [{ "name": "Marquee" }]
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll Speed (seconds)",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "bg_color",
+      "label": "Background Color",
+      "options": [
+        { "value": "blue", "label": "Blue" },
+        { "value": "dark", "label": "Dark Navy" },
+        { "value": "white", "label": "White" }
+      ],
+      "default": "blue"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Marquee Item",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Board & Train" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Board & Train" } },
+        { "type": "item", "settings": { "text": "Private Sessions" } },
+        { "type": "item", "settings": { "text": "Group Classes" } },
+        { "type": "item", "settings": { "text": "Obedience" } },
+        { "type": "item", "settings": { "text": "Protection Sport" } },
+        { "type": "item", "settings": { "text": "Puppy Development" } },
+        { "type": "item", "settings": { "text": "Behavior Modification" } },
+        { "type": "item", "settings": { "text": "Real-World Training" } }
+      ]
+    }
+  ]
 }
 {% endschema %}

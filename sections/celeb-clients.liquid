@@ -1,117 +1,127 @@
-<section class="sec" style="background:{{ section.settings.bg }}">
+<section class="sec" style="background:{{ section.settings.bg }};padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
   <div class="wrap">
     <div class="sec-hd reveal">
-      <span class="tag">Celebrity Clients</span>
-      <h2 class="hdg">Trusted by the <span class="b">World's Best</span></h2>
+      <span class="tag">{{ section.settings.heading | default: 'Celebrity Clients' }}</span>
+      <h2 class="hdg">{{ section.settings.subheading | default: 'Trusted by the <span class="b">World\'s Best</span>' }}</h2>
       <div class="div div-c"></div>
-      <p class="sub">From Grammy winners to NBA champions, the world's most influential people trust Jas Leverette with their dogs.</p>
+      <p class="sub">{{ section.settings.subtext | default: "From Grammy winners to NBA champions, the world's most influential people trust Jas Leverette with their dogs." }}</p>
     </div>
 
     <!-- Celebrity Badge Grid -->
     <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:64px" class="reveal">
+      {% assign has_celebrities = false %}
+      {% for block in section.blocks %}
+        {% if block.type == 'celebrity' %}
+          {% assign has_celebrities = true %}
+          <div class="celeb-badge-wrap" {{ block.shopify_attributes }}>
+            <span class="celeb-badge">
+              {{ block.settings.emoji }} {{ block.settings.name }}
+              <span class="celeb-badge-hint">&#8599;</span>
+            </span>
+            {% if block.settings.image %}
+            <div class="celeb-badge-img">
+              <img src="{{ block.settings.image | img_url: '440x440', crop: 'center' }}" alt="{{ block.settings.name }}" loading="lazy">
+              <div class="celeb-badge-img-name">{{ block.settings.name }}</div>
+            </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
 
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#127925; Kendrick Lamar
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/6854768804d5bfc43d06b9bc.jpeg" alt="Kendrick Lamar" loading="lazy">
-          <div class="celeb-badge-img-name">Kendrick Lamar</div>
+      {% if has_celebrities == false %}
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#127925; Kendrick Lamar<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/6854768804d5bfc43d06b9bc.jpeg" alt="Kendrick Lamar" loading="lazy">
+            <div class="celeb-badge-img-name">Kendrick Lamar</div>
+          </div>
         </div>
-      </div>
-
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#127944; Steph Curry
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/ca21e46f-9700-4400-8295-1c9adfe69691.png" alt="Steph Curry" loading="lazy">
-          <div class="celeb-badge-img-name">Steph Curry</div>
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#127944; Steph Curry<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/ca21e46f-9700-4400-8295-1c9adfe69691.png" alt="Steph Curry" loading="lazy">
+            <div class="celeb-badge-img-name">Steph Curry</div>
+          </div>
         </div>
-      </div>
-
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#127918; Kevin Hart
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/6a6b9da3-df39-4569-b578-091a6cd954e9.png" alt="Kevin Hart" loading="lazy">
-          <div class="celeb-badge-img-name">Kevin Hart</div>
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#127918; Kevin Hart<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/6a6b9da3-df39-4569-b578-091a6cd954e9.png" alt="Kevin Hart" loading="lazy">
+            <div class="celeb-badge-img-name">Kevin Hart</div>
+          </div>
         </div>
-      </div>
-
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#128250; Dr. Phil
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/f2c6b38a-3fc1-4118-a378-f89440decf1a.png" alt="Dr. Phil" loading="lazy">
-          <div class="celeb-badge-img-name">Dr. Phil</div>
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#128250; Dr. Phil<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/f2c6b38a-3fc1-4118-a378-f89440decf1a.png" alt="Dr. Phil" loading="lazy">
+            <div class="celeb-badge-img-name">Dr. Phil</div>
+          </div>
         </div>
-      </div>
-
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#127925; Coi Leray
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/25b1c02e-df43-4652-8feb-1c70a4c6b475.png" alt="Coi Leray" loading="lazy">
-          <div class="celeb-badge-img-name">Coi Leray</div>
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#127925; Coi Leray<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/25b1c02e-df43-4652-8feb-1c70a4c6b475.png" alt="Coi Leray" loading="lazy">
+            <div class="celeb-badge-img-name">Coi Leray</div>
+          </div>
         </div>
-      </div>
-
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#127925; Jason Derulo
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/64fa8e7b-12fb-4c60-b4fb-b86c9c604038.png" alt="Jason Derulo" loading="lazy">
-          <div class="celeb-badge-img-name">Jason Derulo</div>
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#127925; Jason Derulo<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/64fa8e7b-12fb-4c60-b4fb-b86c9c604038.png" alt="Jason Derulo" loading="lazy">
+            <div class="celeb-badge-img-name">Jason Derulo</div>
+          </div>
         </div>
-      </div>
-
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#127775; Demi Moore
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/ab72206e-2279-429b-ba30-594f091fd3da.png" alt="Demi Moore" loading="lazy">
-          <div class="celeb-badge-img-name">Demi Moore</div>
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#127775; Demi Moore<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/ab72206e-2279-429b-ba30-594f091fd3da.png" alt="Demi Moore" loading="lazy">
+            <div class="celeb-badge-img-name">Demi Moore</div>
+          </div>
         </div>
-      </div>
-
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#128737; San Jose Police Dept
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/e3c3e57d-605c-49f6-8ec3-45f6b6068cb9.png" alt="San Jose Police Dept" loading="lazy">
-          <div class="celeb-badge-img-name">San Jose Police Dept</div>
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#128737; San Jose Police Dept<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/e3c3e57d-605c-49f6-8ec3-45f6b6068cb9.png" alt="San Jose Police Dept" loading="lazy">
+            <div class="celeb-badge-img-name">San Jose Police Dept</div>
+          </div>
         </div>
-      </div>
-
-      <div class="celeb-badge-wrap">
-        <span class="celeb-badge">
-          &#127981; Turks &amp; Caicos Military
-          <span class="celeb-badge-hint">&#8599;</span>
-        </span>
-        <div class="celeb-badge-img">
-          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/e6099d33-e4f3-40c0-9728-47f7f1c0bf21.png" alt="Turks &amp; Caicos Military" loading="lazy">
-          <div class="celeb-badge-img-name">Turks &amp; Caicos Military</div>
+        <div class="celeb-badge-wrap">
+          <span class="celeb-badge">&#127981; Turks &amp; Caicos Military<span class="celeb-badge-hint">&#8599;</span></span>
+          <div class="celeb-badge-img">
+            <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/9RVPGbjB6dCgPVsRbKEE/media/e6099d33-e4f3-40c0-9728-47f7f1c0bf21.png" alt="Turks &amp; Caicos Military" loading="lazy">
+            <div class="celeb-badge-img-name">Turks &amp; Caicos Military</div>
+          </div>
         </div>
-      </div>
-
+      {% endif %}
     </div>
 
-    <!-- Steph Curry Testimonial -->
+    <!-- Featured Quote -->
+    {% assign has_quote = false %}
+    {% for block in section.blocks %}
+      {% if block.type == 'featured_quote' %}
+        {% assign has_quote = true %}
+        <div class="reveal" style="max-width:860px;margin:0 auto;background:var(--gi);border-radius:var(--radius);padding:48px;display:flex;gap:40px;align-items:center;flex-wrap:wrap" {{ block.shopify_attributes }}>
+          <div style="flex-shrink:0">
+            <div style="width:120px;height:120px;border-radius:50%;overflow:hidden;border:3px solid var(--blue)">
+              {% if block.settings.image %}
+                <img src="{{ block.settings.image | img_url: '240x240', crop: 'center' }}" alt="{{ block.settings.author_name }}" style="width:100%;height:100%;object-fit:cover;object-position:center top">
+              {% else %}
+                <div style="width:100%;height:100%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:32px;color:#fff">{{ block.settings.author_name | slice: 0 }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div style="flex:1;min-width:240px">
+            <div style="font-size:24px;color:#f59e0b;margin-bottom:16px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p style="font-family:var(--font-body);font-size:18px;font-style:italic;color:rgba(255,255,255,.9);line-height:1.7;margin-bottom:20px">"{{ block.settings.quote }}"</p>
+            <div style="font-family:var(--font-display);font-size:22px;color:#fff;letter-spacing:1px">{{ block.settings.author_name }}</div>
+            <div style="font-family:var(--font-cond);font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px">{{ block.settings.author_title }}</div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% if has_quote == false %}
+    <!-- Default Steph Curry Testimonial -->
     <div class="reveal" style="max-width:860px;margin:0 auto;background:var(--gi);border-radius:var(--radius);padding:48px;display:flex;gap:40px;align-items:center;flex-wrap:wrap">
       <div style="flex-shrink:0">
         <div style="width:120px;height:120px;border-radius:50%;overflow:hidden;border:3px solid var(--blue)">
@@ -125,6 +135,7 @@
         <div style="font-family:var(--font-cond);font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px">NBA Champion &middot; Golden State Warriors</div>
       </div>
     </div>
+    {% endif %}
 
   </div>
 </section>
@@ -142,6 +153,33 @@
         { "value": "var(--w)", "label": "White" }
       ],
       "default": "var(--off)"
+    },
+    { "type": "text", "id": "heading", "label": "Tag / Eyebrow", "default": "Celebrity Clients" },
+    { "type": "text", "id": "subheading", "label": "Heading HTML", "default": "Trusted by the <span class=\"b\">World's Best</span>" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "From Grammy winners to NBA champions, the world's most influential people trust Jas Leverette with their dogs." },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "celebrity",
+      "name": "Celebrity Badge",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Kendrick Lamar" },
+        { "type": "text", "id": "emoji", "label": "Emoji", "default": "🎵" },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "handle", "label": "Social Handle (optional)", "default": "" }
+      ]
+    },
+    {
+      "type": "featured_quote",
+      "name": "Featured Quote",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Jas is the real deal. He didn't just train our dog — he transformed our whole family's relationship with him." },
+        { "type": "text", "id": "author_name", "label": "Author Name", "default": "Steph Curry" },
+        { "type": "text", "id": "author_title", "label": "Author Title", "default": "NBA Champion · Golden State Warriors" },
+        { "type": "image_picker", "id": "image", "label": "Author Photo" }
+      ]
     }
   ],
   "presets": [{ "name": "Celebrity Clients" }]

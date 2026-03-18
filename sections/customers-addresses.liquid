@@ -1,0 +1,273 @@
+{%- liquid
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  case section.settings.bg
+    when 'white'
+      assign bg_val = 'var(--w)'
+    else
+      assign bg_val = 'var(--off)'
+  endcase
+-%}
+
+<section class="section reveal customer-addresses-section" style="padding-top:{{ pt }}px;padding-bottom:{{ pb }}px;background:{{ bg_val }}">
+  <div class="wrap">
+
+    <div class="acct-page-header">
+      <div>
+        <h1 class="acct-page-title">{{ section.settings.heading }}</h1>
+        <a href="/account" class="acct-back-link">&larr; Back to Account</a>
+      </div>
+      <button class="btn btn-blue" id="AddAddressToggle">+ Add New Address</button>
+    </div>
+
+    <!-- New Address Form -->
+    <div id="AddAddressForm" class="addr-form-wrap" style="display:none">
+      <div class="addr-form-card">
+        <h2 class="addr-form-title">New Address</h2>
+        {% form 'customer_address', customer.new_address %}
+          {{ form.errors | default_errors }}
+          <div class="field-group-row">
+            <div class="field-group">
+              <label for="NewAddressFirstName">First Name</label>
+              <input type="text" name="address[first_name]" id="NewAddressFirstName" value="{{ customer.new_address.first_name }}" autocomplete="given-name">
+            </div>
+            <div class="field-group">
+              <label for="NewAddressLastName">Last Name</label>
+              <input type="text" name="address[last_name]" id="NewAddressLastName" value="{{ customer.new_address.last_name }}" autocomplete="family-name">
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="NewAddressCompany">Company (optional)</label>
+            <input type="text" name="address[company]" id="NewAddressCompany" value="{{ customer.new_address.company }}" autocomplete="organization">
+          </div>
+          <div class="field-group">
+            <label for="NewAddressAddress1">Address</label>
+            <input type="text" name="address[address1]" id="NewAddressAddress1" value="{{ customer.new_address.address1 }}" autocomplete="address-line1" required>
+          </div>
+          <div class="field-group">
+            <label for="NewAddressAddress2">Apartment, suite, etc. (optional)</label>
+            <input type="text" name="address[address2]" id="NewAddressAddress2" value="{{ customer.new_address.address2 }}" autocomplete="address-line2">
+          </div>
+          <div class="field-group-row">
+            <div class="field-group">
+              <label for="NewAddressCity">City</label>
+              <input type="text" name="address[city]" id="NewAddressCity" value="{{ customer.new_address.city }}" autocomplete="address-level2" required>
+            </div>
+            <div class="field-group">
+              <label for="NewAddressZip">Zip / Postal Code</label>
+              <input type="text" name="address[zip]" id="NewAddressZip" value="{{ customer.new_address.zip }}" autocomplete="postal-code">
+            </div>
+          </div>
+          <div class="field-group-row">
+            <div class="field-group">
+              <label for="NewAddressCountry">Country</label>
+              <select name="address[country]" id="NewAddressCountry" data-default="{{ customer.new_address.country_code }}">
+                {{ all_country_option_tags }}
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="NewAddressProvince">State / Province</label>
+              <select name="address[province]" id="NewAddressProvince" data-default="{{ customer.new_address.province_code }}">
+                <option value="">Select...</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="NewAddressPhone">Phone (optional)</label>
+            <input type="tel" name="address[phone]" id="NewAddressPhone" value="{{ customer.new_address.phone }}" autocomplete="tel">
+          </div>
+          <div class="field-group field-group--checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" name="address[default]" id="NewAddressDefault" value="1">
+              <span>Set as default address</span>
+            </label>
+          </div>
+          <div class="addr-form-actions">
+            <button type="submit" class="btn btn-blue">Save Address</button>
+            <button type="button" class="btn btn-outline" id="CancelAddAddress">Cancel</button>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+
+    <!-- Existing Addresses -->
+    {% if customer.addresses.size > 0 %}
+      <div class="addr-grid">
+        {% for address in customer.addresses %}
+          <div class="addr-card">
+            {% if address.id == customer.default_address.id %}
+              <span class="addr-default-badge">Default</span>
+            {% endif %}
+            <div class="addr-card__name">{{ address.first_name }} {{ address.last_name }}</div>
+            <address class="addr-card__lines">
+              {% if address.company != blank %}<span>{{ address.company }}</span><br>{% endif %}
+              {{ address.address1 }}<br>
+              {% if address.address2 != blank %}{{ address.address2 }}<br>{% endif %}
+              {{ address.city }}, {{ address.province_code }} {{ address.zip }}<br>
+              {{ address.country }}<br>
+              {% if address.phone != blank %}{{ address.phone }}{% endif %}
+            </address>
+            <div class="addr-card__actions">
+              <button class="btn btn-outline addr-edit-btn" style="font-size:12px;padding:8px 16px" data-address-id="{{ address.id }}">Edit</button>
+              {% form 'customer_address', address %}
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="addr-delete-btn" onclick="return confirm('Delete this address?')">Delete</button>
+              {% endform %}
+            </div>
+
+            <!-- Inline Edit Form -->
+            <div class="addr-edit-form" id="EditAddress_{{ address.id }}" style="display:none">
+              {% form 'customer_address', address %}
+                {{ form.errors | default_errors }}
+                <div class="field-group-row">
+                  <div class="field-group">
+                    <label>First Name</label>
+                    <input type="text" name="address[first_name]" value="{{ address.first_name }}">
+                  </div>
+                  <div class="field-group">
+                    <label>Last Name</label>
+                    <input type="text" name="address[last_name]" value="{{ address.last_name }}">
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label>Company (optional)</label>
+                  <input type="text" name="address[company]" value="{{ address.company }}">
+                </div>
+                <div class="field-group">
+                  <label>Address</label>
+                  <input type="text" name="address[address1]" value="{{ address.address1 }}" required>
+                </div>
+                <div class="field-group">
+                  <label>Apartment, suite, etc. (optional)</label>
+                  <input type="text" name="address[address2]" value="{{ address.address2 }}">
+                </div>
+                <div class="field-group-row">
+                  <div class="field-group">
+                    <label>City</label>
+                    <input type="text" name="address[city]" value="{{ address.city }}" required>
+                  </div>
+                  <div class="field-group">
+                    <label>Zip / Postal Code</label>
+                    <input type="text" name="address[zip]" value="{{ address.zip }}">
+                  </div>
+                </div>
+                <div class="field-group-row">
+                  <div class="field-group">
+                    <label>Country</label>
+                    <select name="address[country]" data-default="{{ address.country_code }}">
+                      {{ all_country_option_tags }}
+                    </select>
+                  </div>
+                  <div class="field-group">
+                    <label>State / Province</label>
+                    <select name="address[province]" data-default="{{ address.province_code }}">
+                      <option value="">Select...</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label>Phone (optional)</label>
+                  <input type="tel" name="address[phone]" value="{{ address.phone }}">
+                </div>
+                <div class="field-group field-group--checkbox">
+                  <label class="checkbox-label">
+                    <input type="checkbox" name="address[default]" value="1" {% if address.id == customer.default_address.id %}checked{% endif %}>
+                    <span>Set as default address</span>
+                  </label>
+                </div>
+                <div class="addr-form-actions">
+                  <button type="submit" class="btn btn-blue" style="font-size:13px;padding:10px 20px">Save</button>
+                  <button type="button" class="btn btn-outline addr-cancel-edit" style="font-size:13px;padding:10px 20px" data-address-id="{{ address.id }}">Cancel</button>
+                </div>
+              {% endform %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="acct-empty" style="margin-top:32px">
+        <div class="acct-empty__icon">&#127968;</div>
+        <p class="acct-empty__text">You haven't saved any addresses yet.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    // Add address toggle
+    var addBtn = document.getElementById('AddAddressToggle');
+    var addForm = document.getElementById('AddAddressForm');
+    var cancelBtn = document.getElementById('CancelAddAddress');
+
+    if (addBtn && addForm) {
+      addBtn.addEventListener('click', function () {
+        addForm.style.display = addForm.style.display === 'none' ? 'block' : 'none';
+        addBtn.textContent = addForm.style.display === 'block' ? '× Close' : '+ Add New Address';
+      });
+    }
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', function () {
+        addForm.style.display = 'none';
+        addBtn.textContent = '+ Add New Address';
+      });
+    }
+
+    // Edit address toggles
+    document.querySelectorAll('.addr-edit-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-address-id');
+        var editForm = document.getElementById('EditAddress_' + id);
+        if (editForm) {
+          editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+        }
+      });
+    });
+
+    document.querySelectorAll('.addr-cancel-edit').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-address-id');
+        var editForm = document.getElementById('EditAddress_' + id);
+        if (editForm) editForm.style.display = 'none';
+      });
+    });
+
+    // Country/province selectors
+    document.querySelectorAll('select[data-default]').forEach(function (sel) {
+      if (!sel.name.includes('country')) return;
+      var defaultVal = sel.getAttribute('data-default');
+      if (defaultVal) {
+        for (var i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].value === defaultVal || sel.options[i].getAttribute('data-code') === defaultVal) {
+            sel.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Customer Addresses",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Saved Addresses" },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "off-white", "label": "Off White" },
+        { "value": "white", "label": "White" }
+      ],
+      "default": "off-white"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 40, "max": 160, "step": 4, "default": 100, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 40, "max": 160, "step": 4, "default": 100, "unit": "px" }
+  ],
+  "presets": [{ "name": "Customer Addresses" }]
+}
+{% endschema %}

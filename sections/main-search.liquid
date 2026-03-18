@@ -1,0 +1,99 @@
+<section class="section reveal" style="padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;background:var(--off)">
+  <div class="wrap">
+
+    <div style="text-align:center;margin-bottom:48px">
+      <h1 style="font-family:var(--font-display);font-size:clamp(36px,5vw,64px);color:var(--gi);margin-bottom:24px">{{ section.settings.heading }}</h1>
+      <form action="/search" method="get" style="max-width:600px;margin:0 auto;display:flex;gap:12px">
+        <input
+          type="text"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ section.settings.placeholder }}"
+          style="flex:1;padding:14px 20px;border:1.5px solid var(--bo);border-radius:8px;font-family:var(--font-body);font-size:16px;background:var(--w);color:var(--gi)"
+        >
+        <input type="hidden" name="type" value="product,article,page">
+        <button type="submit" class="btn btn-blue" style="white-space:nowrap">{{ section.settings.button_text }}</button>
+      </form>
+    </div>
+
+    {% if search.performed %}
+      {% if search.results_count == 0 %}
+        <div style="text-align:center;padding:60px 32px;background:var(--w);border-radius:12px;border:1px solid var(--bo)">
+          <div style="font-size:48px;margin-bottom:16px">🔍</div>
+          <h2 style="font-family:var(--font-display);font-size:36px;color:var(--gi);margin-bottom:12px">{{ section.settings.no_results_heading }}</h2>
+          <p style="font-family:var(--font-body);color:#666;margin-bottom:28px">{{ section.settings.no_results_text | replace: '[terms]', search.terms }}</p>
+          <a href="/collections/all" class="btn btn-blue">{{ section.settings.no_results_cta }}</a>
+        </div>
+      {% else %}
+        <p style="font-family:var(--font-cond);font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#666;margin-bottom:32px">
+          {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for &ldquo;{{ search.terms }}&rdquo;
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              <a href="{{ item.url }}" style="display:block;background:var(--w);border:1px solid var(--bo);border-radius:12px;overflow:hidden;text-decoration:none;transition:box-shadow .2s" onmouseover="this.style.boxShadow='0 8px 32px rgba(0,0,0,.12)'" onmouseout="this.style.boxShadow='none'">
+                {% if item.featured_image %}
+                  <div style="aspect-ratio:1;overflow:hidden;background:#f0f0f0">
+                    <img src="{{ item.featured_image | image_url: width: 400 }}" alt="{{ item.featured_image.alt | escape }}" width="400" height="400" style="width:100%;height:100%;object-fit:cover">
+                  </div>
+                {% endif %}
+                <div style="padding:20px">
+                  <div style="font-family:var(--font-cond);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:6px">Product</div>
+                  <h3 style="font-family:var(--font-display);font-size:22px;color:var(--gi);margin-bottom:8px;line-height:1.2">{{ item.title }}</h3>
+                  <p style="font-family:var(--font-body);font-size:18px;font-weight:700;color:var(--gi)">{{ item.price | money }}</p>
+                </div>
+              </a>
+            {% elsif item.object_type == 'article' %}
+              <a href="{{ item.url }}" style="display:block;background:var(--w);border:1px solid var(--bo);border-radius:12px;overflow:hidden;text-decoration:none;transition:box-shadow .2s" onmouseover="this.style.boxShadow='0 8px 32px rgba(0,0,0,.12)'" onmouseout="this.style.boxShadow='none'">
+                {% if item.image %}
+                  <div style="aspect-ratio:16/9;overflow:hidden;background:#f0f0f0">
+                    <img src="{{ item.image | image_url: width: 480 }}" alt="{{ item.image.alt | escape }}" width="480" height="270" style="width:100%;height:100%;object-fit:cover">
+                  </div>
+                {% endif %}
+                <div style="padding:20px">
+                  <div style="font-family:var(--font-cond);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:6px">Article</div>
+                  <h3 style="font-family:var(--font-display);font-size:22px;color:var(--gi);margin-bottom:8px;line-height:1.2">{{ item.title }}</h3>
+                  <p style="font-family:var(--font-body);font-size:14px;color:#666;line-height:1.6">{{ item.excerpt | strip_html | truncate: 100 }}</p>
+                </div>
+              </a>
+            {% else %}
+              <a href="{{ item.url }}" style="display:block;background:var(--w);border:1px solid var(--bo);border-radius:12px;padding:28px;text-decoration:none;transition:box-shadow .2s" onmouseover="this.style.boxShadow='0 8px 32px rgba(0,0,0,.12)'" onmouseout="this.style.boxShadow='none'">
+                <div style="font-family:var(--font-cond);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:8px">Page</div>
+                <h3 style="font-family:var(--font-display);font-size:22px;color:var(--gi);line-height:1.2">{{ item.title }}</h3>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div style="display:flex;justify-content:center;gap:12px;margin-top:48px">
+            {% if paginate.previous %}
+              <a href="{{ paginate.previous.url }}" class="btn btn-outline">← Previous</a>
+            {% endif %}
+            {% if paginate.next %}
+              <a href="{{ paginate.next.url }}" class="btn btn-outline">Next →</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search Page",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Search" },
+    { "type": "text", "id": "placeholder", "label": "Input Placeholder", "default": "Search products, articles…" },
+    { "type": "text", "id": "button_text", "label": "Search Button", "default": "Search" },
+    { "type": "text", "id": "no_results_heading", "label": "No Results Heading", "default": "No Results Found" },
+    { "type": "text", "id": "no_results_text", "label": "No Results Text", "default": "We couldn't find anything for \"[terms]\". Try a different search." },
+    { "type": "text", "id": "no_results_cta", "label": "No Results CTA", "default": "Browse All Products" },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 40, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 40, "max": 160, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "presets": [{ "name": "Search Page" }]
+}
+{% endschema %}

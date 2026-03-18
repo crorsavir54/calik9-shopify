@@ -1,22 +1,33 @@
 <section class="hero-dark">
   <div class="hero-left">
     <div class="hero-eyebrow">
+      {% if section.settings.show_netflix_badge %}
       <div class="nfx-badge">
         <span class="nn">N</span>
-        <span>Canine Intervention</span>
+        <span>{{ section.settings.netflix_badge_label | default: 'Canine Intervention' }}</span>
       </div>
-      <span class="hero-tag-lt">Est. 2005 &middot; Oakland, CA</span>
+      {% endif %}
+      <span class="hero-tag-lt">{{ section.settings.eyebrow | default: 'Est. 2005 &middot; Oakland, CA' }}</span>
     </div>
     <h1 class="hdg-hero">
-      REAL DOGS.<br>
-      <em>REAL RESULTS.</em>
+      {{ section.settings.headline | default: 'REAL DOGS.' | newline_to_br }}<br>
+      <em>{{ section.settings.headline_em | default: 'REAL RESULTS.' }}</em>
     </h1>
     <p class="hero-sub">{{ section.settings.subheadline }}</p>
     <div class="hero-ctas">
-      <a href="/pages/eval" class="btn btn-blue">Book Evaluation</a>
-      <a href="/collections/all" class="btn btn-outline-white">Shop Now</a>
+      <a href="{{ section.settings.primary_cta_url | default: '/pages/eval' }}" class="btn btn-blue">{{ section.settings.primary_cta_text | default: 'Book Evaluation' }}</a>
+      <a href="{{ section.settings.secondary_cta_url | default: '/collections/all' }}" class="btn btn-outline-white">{{ section.settings.secondary_cta_text | default: 'Shop Now' }}</a>
     </div>
     <div class="hero-stats">
+      {% for block in section.blocks %}
+        {% if block.type == 'stat' %}
+        <div {{ block.shopify_attributes }}>
+          <div class="hs-num">{{ block.settings.number }}</div>
+          <div class="hs-lbl">{{ block.settings.label }}</div>
+        </div>
+        {% endif %}
+      {% endfor %}
+      {% if section.blocks.size == 0 %}
       <div>
         <div class="hs-num count-up" data-target="5000" data-suffix="+">5000+</div>
         <div class="hs-lbl">Dogs Trained</div>
@@ -33,6 +44,7 @@
         <div class="hs-num">A+</div>
         <div class="hs-lbl">Results</div>
       </div>
+      {% endif %}
     </div>
   </div>
   <div class="hero-right">
@@ -47,8 +59,37 @@
   "name": "Hero",
   "settings": [
     { "type": "image_picker", "id": "hero_image", "label": "Hero Image" },
-    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Jas Leverette and Cali K9\u00ae deliver professional dog training rooted in relationship, structure, and results." }
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow Text", "default": "Est. 2005 · Oakland, CA" },
+    { "type": "checkbox", "id": "show_netflix_badge", "label": "Show Netflix Badge", "default": true },
+    { "type": "text", "id": "netflix_badge_label", "label": "Netflix Badge Label", "default": "Canine Intervention" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "REAL DOGS." },
+    { "type": "text", "id": "headline_em", "label": "Headline (faded line)", "default": "REAL RESULTS." },
+    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Jas Leverette and Cali K9® deliver professional dog training rooted in relationship, structure, and results." },
+    { "type": "text", "id": "primary_cta_text", "label": "Primary CTA Text", "default": "Book Evaluation" },
+    { "type": "url", "id": "primary_cta_url", "label": "Primary CTA URL", "default": "/pages/eval" },
+    { "type": "text", "id": "secondary_cta_text", "label": "Secondary CTA Text", "default": "Shop Now" },
+    { "type": "url", "id": "secondary_cta_url", "label": "Secondary CTA URL", "default": "/collections/all" }
   ],
-  "presets": [{ "name": "Hero" }]
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Number / Value", "default": "5000+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Dogs Trained" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "5000+", "label": "Dogs Trained" } },
+        { "type": "stat", "settings": { "number": "18+", "label": "Years Experience" } },
+        { "type": "stat", "settings": { "number": "Netflix", "label": "Featured" } },
+        { "type": "stat", "settings": { "number": "A+", "label": "Results" } }
+      ]
+    }
+  ]
 }
 {% endschema %}

@@ -1,0 +1,92 @@
+{% if section.settings.bg == 'blue' %}
+  {% assign section_bg = 'var(--blue)' %}
+  {% assign text_color = '#fff' %}
+  {% assign sub_color = 'rgba(255,255,255,.75)' %}
+  {% assign heading_color = '#fff' %}
+{% elsif section.settings.bg == 'dark' %}
+  {% assign section_bg = 'var(--gi)' %}
+  {% assign text_color = '#fff' %}
+  {% assign sub_color = 'rgba(255,255,255,.75)' %}
+  {% assign heading_color = '#fff' %}
+{% elsif section.settings.bg == 'off-white' %}
+  {% assign section_bg = 'var(--off)' %}
+  {% assign text_color = 'var(--text)' %}
+  {% assign sub_color = 'var(--gm)' %}
+  {% assign heading_color = 'var(--gi)' %}
+{% else %}
+  {% assign section_bg = 'var(--w)' %}
+  {% assign text_color = 'var(--text)' %}
+  {% assign sub_color = 'var(--gm)' %}
+  {% assign heading_color = 'var(--gi)' %}
+{% endif %}
+
+{% assign text_align = section.settings.alignment | default: 'center' %}
+
+<section class="section reveal" style="background:{{ section_bg }};color:{{ text_color }};padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px">
+  <div class="wrap-md" style="text-align:{{ text_align }}">
+    {% if section.settings.eyebrow != blank %}
+      <div style="font-family:var(--font-cond);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:{{ sub_color }};margin-bottom:16px">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2 style="font-family:var(--font-display);font-size:clamp(36px,5vw,64px);color:{{ heading_color }};line-height:1;margin-bottom:20px">{{ section.settings.heading }}</h2>
+      <div style="width:48px;height:3px;background:var(--blue);border-radius:2px;margin:{% if text_align == 'center' %}0 auto{% else %}0{% endif %} 0 24px"></div>
+    {% endif %}
+    {% if section.settings.body != blank %}
+      <div style="font-family:var(--font-body);font-size:17px;color:{{ sub_color }};line-height:1.8;margin-bottom:32px">{{ section.settings.body }}</div>
+    {% endif %}
+    {% if section.settings.show_cta and section.settings.cta_text != blank %}
+      {% if section.settings.bg == 'blue' or section.settings.bg == 'dark' %}
+        <a href="{{ section.settings.cta_url }}" class="btn btn-white">{{ section.settings.cta_text }}</a>
+      {% else %}
+        <a href="{{ section.settings.cta_url }}" class="btn btn-blue">{{ section.settings.cta_text }}</a>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich Text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (optional)", "default": "" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "About Cali K9" },
+    { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Professional dog training rooted in relationship, structure, and real-world results. Jas Leverette and the Cali K9 team are here to transform your dog's behavior.</p>" },
+    { "type": "checkbox", "id": "show_cta", "label": "Show CTA Button", "default": false },
+    { "type": "text", "id": "cta_text", "label": "CTA Text", "default": "Learn More" },
+    { "type": "url", "id": "cta_url", "label": "CTA URL", "default": "/pages/about" },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "white", "label": "White" },
+        { "value": "off-white", "label": "Off White" },
+        { "value": "blue", "label": "Blue" },
+        { "value": "dark", "label": "Dark Navy" }
+      ],
+      "default": "white"
+    },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "presets": [
+    {
+      "name": "Rich Text",
+      "settings": {
+        "heading": "About Cali K9",
+        "body": "<p>Professional dog training rooted in relationship, structure, and real-world results.</p>"
+      }
+    }
+  ]
+}
+{% endschema %}
