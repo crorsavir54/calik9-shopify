@@ -1,12 +1,4 @@
 {
-  "sections": {
-    "main": {
-      "type": "rich-text",
-      "settings": {
-        "heading": "",
-        "bg": "white"
-      }
-    }
-  },
-  "order": ["main"]
+  "sections": {},
+  "order": []
 }

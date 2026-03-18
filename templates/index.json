@@ -1,13 +1,4 @@
 {
-  "sections": {
-    "hero": { "type": "hero", "settings": {} },
-    "marquee": { "type": "marquee", "settings": {} },
-    "proof_strip": { "type": "proof-strip", "settings": {} },
-    "seen_on": { "type": "seen-on", "settings": {} },
-    "programs": { "type": "programs", "settings": {} },
-    "featured_products": { "type": "featured-products", "settings": {} },
-    "testimonials": { "type": "testimonials", "settings": {} },
-    "cta": { "type": "cta-banner", "settings": {} }
-  },
-  "order": ["hero", "marquee", "proof_strip", "seen_on", "programs", "featured_products", "testimonials", "cta"]
+  "sections": {},
+  "order": []
 }

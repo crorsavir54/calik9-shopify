@@ -1,11 +1,4 @@
 {
-  "sections": {
-    "eval_hero": { "type": "eval-hero", "settings": {} },
-    "eval_included": { "type": "eval-whats-included", "settings": {} },
-    "eval_who": { "type": "eval-who-for", "settings": {} },
-    "celebs": { "type": "celeb-clients", "settings": {} },
-    "eval_about": { "type": "eval-about-jas", "settings": {} },
-    "eval_cta": { "type": "eval-final-cta", "settings": {} }
-  },
-  "order": ["eval_hero", "eval_included", "eval_who", "celebs", "eval_about", "eval_cta"]
+  "sections": {},
+  "order": []
 }
