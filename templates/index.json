@@ -1,6 +1,6 @@
 {
   "sections": {
-    "featured_products": { "type": "featured-products", "settings": {} }
+    "main": { "type": "homepage-test", "settings": {} }
   },
-  "order": ["featured_products"]
+  "order": ["main"]
 }

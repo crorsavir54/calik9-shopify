@@ -1,0 +1,14 @@
+<div style="padding:80px 24px;text-align:center;font-family:sans-serif">
+  <h1>{{ shop.name }} — Homepage Working</h1>
+  <p>{{ section.settings.message }}</p>
+</div>
+
+{% schema %}
+{
+  "name": "Homepage Test",
+  "settings": [
+    { "type": "text", "id": "message", "label": "Message", "default": "Theme is loading correctly." }
+  ],
+  "presets": [{ "name": "Homepage Test" }]
+}
+{% endschema %}
