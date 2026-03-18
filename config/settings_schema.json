@@ -84,6 +84,19 @@
     "settings": [
       {
         "type": "text",
+        "id": "brand_name",
+        "label": "Brand Name (nav + footer)",
+        "default": "CALI K9"
+      },
+      {
+        "type": "link_list",
+        "id": "nav_menu",
+        "label": "Main Menu",
+        "default": "main-menu",
+        "info": "Manage menus in Online Store > Navigation"
+      },
+      {
+        "type": "text",
         "id": "nav_cta_text",
         "label": "Nav CTA Button Text",
         "default": "Book Evaluation"
@@ -95,8 +108,8 @@
       },
       {
         "type": "checkbox",
-        "id": "show_programs_dropdown",
-        "label": "Show Programs Dropdown",
+        "id": "show_cart_icon",
+        "label": "Show Cart Icon",
         "default": true
       }
     ]
@@ -104,6 +117,43 @@
   {
     "name": "Footer",
     "settings": [
+      {
+        "type": "link_list",
+        "id": "footer_menu_1",
+        "label": "Footer Menu 1 (Programs)",
+        "default": "footer-programs",
+        "info": "Manage menus in Online Store > Navigation"
+      },
+      {
+        "type": "text",
+        "id": "footer_menu_1_heading",
+        "label": "Footer Menu 1 Heading",
+        "default": "Programs"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_menu_2",
+        "label": "Footer Menu 2 (Shop)",
+        "default": "footer-shop"
+      },
+      {
+        "type": "text",
+        "id": "footer_menu_2_heading",
+        "label": "Footer Menu 2 Heading",
+        "default": "Shop"
+      },
+      {
+        "type": "link_list",
+        "id": "footer_menu_3",
+        "label": "Footer Menu 3 (Company)",
+        "default": "footer-company"
+      },
+      {
+        "type": "text",
+        "id": "footer_menu_3_heading",
+        "label": "Footer Menu 3 Heading",
+        "default": "Company"
+      },
       {
         "type": "text",
         "id": "footer_tagline",

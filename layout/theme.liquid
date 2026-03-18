@@ -27,37 +27,57 @@
 <body>
 
 <!-- NAV -->
+{% assign nav_menu = linklists[settings.nav_menu] %}
 <nav class="site-nav">
   <div class="nav-left">
     <a href="/" class="nav-brand">
       {% if settings.logo %}
         <img src="{{ settings.logo | img_url: '80x80' }}" alt="{{ shop.name }}">
       {% endif %}
-      <span class="nav-brand-name">CALI K9</span>
+      <span class="nav-brand-name">{{ settings.brand_name | default: 'CALI K9' }}</span>
     </a>
     <ul class="nav-links">
-      <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a></li>
-      <li><a href="/pages/about" {% if request.path contains 'about' %}class="active"{% endif %}>About</a></li>
-      <li><a href="/collections/all" {% if request.path contains 'collections' %}class="active"{% endif %}>Shop</a></li>
-      {% if settings.show_programs_dropdown %}
-      <li class="nav-has-dropdown">
-        <button {% if request.path contains 'eval' or request.path contains 'vip' %}class="active"{% endif %}>
-          Programs <span class="nav-chevron">&#9660;</span>
-        </button>
-        <div class="nav-dropdown">
-          <a href="/pages/vip"><span class="drop-icon">&#9733;</span> VIP Training</a>
-          <a href="/pages/eval"><span class="drop-icon">&#8594;</span> Dog Evaluation</a>
-        </div>
-      </li>
+      {% if nav_menu != blank %}
+        {% for link in nav_menu.links %}
+          {% if link.links != blank %}
+            <li class="nav-has-dropdown">
+              <button {% if link.active %}class="active"{% endif %}>
+                {{ link.title }} <span class="nav-chevron">&#9660;</span>
+              </button>
+              <div class="nav-dropdown">
+                {% for child in link.links %}
+                  <a href="{{ child.url }}" {% if child.active %}class="active"{% endif %}>{{ child.title }}</a>
+                {% endfor %}
+              </div>
+            </li>
+          {% else %}
+            <li><a href="{{ link.url }}" {% if link.active %}class="active"{% endif %}>{{ link.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a></li>
+        <li><a href="/pages/about">About</a></li>
+        <li><a href="/collections/all">Shop</a></li>
+        <li class="nav-has-dropdown">
+          <button>Programs <span class="nav-chevron">&#9660;</span></button>
+          <div class="nav-dropdown">
+            <a href="/pages/vip">VIP Training</a>
+            <a href="/pages/eval">Dog Evaluation</a>
+          </div>
+        </li>
       {% endif %}
     </ul>
   </div>
   <div class="nav-right">
+    {% if settings.show_cart_icon != false %}
     <button class="nav-cart-btn" data-open-cart aria-label="Open cart">
       {% render 'icon-cart' %}
       <span class="cart-count" style="display:none">0</span>
     </button>
+    {% endif %}
+    {% if settings.nav_cta_text != blank %}
     <a href="{{ settings.nav_cta_url | default: '/pages/eval' }}" class="nav-book">{{ settings.nav_cta_text | default: 'Book Evaluation' }}</a>
+    {% endif %}
     <button class="nav-mobile-btn" aria-label="Menu">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="3" y1="6" x2="21" y2="6"/>
@@ -70,12 +90,26 @@
 
 <!-- MOBILE DRAWER -->
 <div class="nav-drawer">
-  <a href="/" onclick="this.closest('.nav-drawer').classList.remove('open')">Home</a>
-  <a href="/pages/about" onclick="this.closest('.nav-drawer').classList.remove('open')">About</a>
-  <a href="/pages/vip" onclick="this.closest('.nav-drawer').classList.remove('open')">VIP Training</a>
-  <a href="/pages/eval" onclick="this.closest('.nav-drawer').classList.remove('open')">Dog Evaluation</a>
-  <a href="/collections/all" onclick="this.closest('.nav-drawer').classList.remove('open')">Shop</a>
+  {% if nav_menu != blank %}
+    {% for link in nav_menu.links %}
+      {% if link.links != blank %}
+        {% for child in link.links %}
+          <a href="{{ child.url }}" onclick="this.closest('.nav-drawer').classList.remove('open')">{{ child.title }}</a>
+        {% endfor %}
+      {% else %}
+        <a href="{{ link.url }}" onclick="this.closest('.nav-drawer').classList.remove('open')">{{ link.title }}</a>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <a href="/" onclick="this.closest('.nav-drawer').classList.remove('open')">Home</a>
+    <a href="/pages/about" onclick="this.closest('.nav-drawer').classList.remove('open')">About</a>
+    <a href="/pages/vip" onclick="this.closest('.nav-drawer').classList.remove('open')">VIP Training</a>
+    <a href="/pages/eval" onclick="this.closest('.nav-drawer').classList.remove('open')">Dog Evaluation</a>
+    <a href="/collections/all" onclick="this.closest('.nav-drawer').classList.remove('open')">Shop</a>
+  {% endif %}
+  {% if settings.nav_cta_text != blank %}
   <a href="{{ settings.nav_cta_url | default: '/pages/eval' }}" class="book-mobile" onclick="this.closest('.nav-drawer').classList.remove('open')">{{ settings.nav_cta_text | default: 'Book Evaluation' }}</a>
+  {% endif %}
 </div>
 
 <!-- CART OVERLAY + DRAWER -->
@@ -99,6 +133,9 @@
 <main>{{ content_for_layout }}</main>
 
 <!-- FOOTER -->
+{% assign ft_menu_1 = linklists[settings.footer_menu_1] %}
+{% assign ft_menu_2 = linklists[settings.footer_menu_2] %}
+{% assign ft_menu_3 = linklists[settings.footer_menu_3] %}
 <footer class="site-footer">
   <div class="wrap">
     <div class="ft-grid">
@@ -106,7 +143,7 @@
         {% if settings.logo %}
           <img src="{{ settings.logo | img_url: '96x96' }}" alt="{{ shop.name }}">
         {% endif %}
-        <div class="ft-brand-name">CALI K9<sup>&#174;</sup></div>
+        <div class="ft-brand-name">{{ settings.brand_name | default: 'CALI K9' }}<sup>&#174;</sup></div>
         <p class="ft-tagline">{{ settings.footer_tagline | default: "Professional dog training rooted in relationship, structure, and real-world results. As seen on Netflix's Canine Intervention." }}</p>
         <div class="ft-socials">
           {% if settings.social_instagram != blank %}
@@ -135,29 +172,50 @@
           {% endif %}
         </div>
       </div>
+
       <div class="ft-col">
-        <h4>Programs</h4>
-        <a href="/pages/vip">VIP Training</a>
-        <a href="/pages/eval">Dog Evaluation</a>
+        <h4>{{ settings.footer_menu_1_heading | default: 'Programs' }}</h4>
+        {% if ft_menu_1 != blank %}
+          {% for link in ft_menu_1.links %}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="/pages/vip">VIP Training</a>
+          <a href="/pages/eval">Dog Evaluation</a>
+        {% endif %}
       </div>
+
       <div class="ft-col">
-        <h4>Shop</h4>
-        <a href="/collections/all">All Products</a>
-        <a href="/collections/equipment">Equipment</a>
-        <a href="/collections/apparel">Apparel</a>
-        <a href="/collections/treats">Treats</a>
+        <h4>{{ settings.footer_menu_2_heading | default: 'Shop' }}</h4>
+        {% if ft_menu_2 != blank %}
+          {% for link in ft_menu_2.links %}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="/collections/all">All Products</a>
+          <a href="/collections/equipment">Equipment</a>
+          <a href="/collections/apparel">Apparel</a>
+          <a href="/collections/treats">Treats</a>
+        {% endif %}
       </div>
+
       <div class="ft-col">
-        <h4>Company</h4>
-        <a href="/pages/about">About Jas</a>
-        <a href="/pages/eval">Contact</a>
-        <a href="/policies/privacy-policy">Privacy Policy</a>
-        <a href="/policies/terms-of-service">Terms</a>
-        <a href="/policies/refund-policy">Returns</a>
+        <h4>{{ settings.footer_menu_3_heading | default: 'Company' }}</h4>
+        {% if ft_menu_3 != blank %}
+          {% for link in ft_menu_3.links %}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="/pages/about">About Jas</a>
+          <a href="/pages/eval">Contact</a>
+          <a href="/policies/privacy-policy">Privacy Policy</a>
+          <a href="/policies/terms-of-service">Terms</a>
+          <a href="/policies/refund-policy">Returns</a>
+        {% endif %}
       </div>
     </div>
     <div class="ft-bot">
-      <span class="ft-copy">&copy; {{ 'now' | date: '%Y' }} Cali K9&reg;. All rights reserved.</span>
+      <span class="ft-copy">&copy; {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: 'Cali K9' }}&reg;. All rights reserved.</span>
       <span class="ft-copy">{{ settings.footer_email | default: 'training@calik9.com' }}</span>
     </div>
   </div>
